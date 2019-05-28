@@ -19,8 +19,9 @@ class Session:
         if self.environment not in acceptable_environments:
             raise exceptions.InvalidEnvironmentError(
                 '%s is not a valid environment. The acceptable inputs'
-                'are \nsandbox - a server for testing API calls\n -live'
-                ' - the production ECM3 environment' % self.environment
+                ' are \n'
+                '- sandbox - a server for testing API calls\n'
+                '- live - the production ECM3 environment' % self.environment
             )
         elif self.environment == 'ecm3':
             self.client_settings = settings.ecm3_client_details
@@ -70,7 +71,6 @@ class Session:
             params=self.params,
             headers=self.headers,
         )
-        print(self.endpoint)
         try:
             if response.text:
                 return response.text

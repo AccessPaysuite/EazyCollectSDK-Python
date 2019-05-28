@@ -1,5 +1,5 @@
 current_environment = {
-    'env': 'sandbox'
+    'env': 'sandbox'    # sandbox || ecm3
 }
 
 sandbox_client_details = {
