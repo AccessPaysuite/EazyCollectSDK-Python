@@ -137,6 +137,168 @@ class Test(unittest.TestCase):
             )
         self.assertIn('is not a valid schedule', str(e.exception))
 
+    # All non-adhoc weekly schedules will fail.
+    def test_weekly_post_contract_until_further_notice(self):
+        req = self.eazy.contract(
+            '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+            '2019-07-15', False, 'Until Further Notice',
+            'Switch to further notice', frequency=1,
+            payment_amount=10.00, payment_day_in_week='Monday'
+            )
+        self.assertIn('SDKTST-', req)
+
+    def test_weekly_post_contract_take_certain_number_of_debits(self):
+        req = self.eazy.contract(
+            '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+            '2019-07-15', False, 'Take certain number of debits',
+            'Switch to further notice', frequency=1,
+            payment_amount=10.00, payment_day_in_week='Monday',
+            number_of_debits=10
+            )
+        self.assertIn('SDKTST-', req)
+
+    def test_weekly_post_contract_end_on_exact_date(self):
+        req = self.eazy.contract(
+            '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+            '2019-07-15', False, 'End on exact date',
+            'Switch to further notice', frequency=1,
+            payment_amount=10.00, payment_day_in_week='Monday',
+            termination_date='2020-01-15'
+            )
+        self.assertIn('SDKTST-', req)
+
+    def test_weekly_auto_fix_start_date(self):
+        s_contracts['auto_start_date'] = True
+        req = self.eazy.contract(
+            '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+            '2019-06-01', False, 'Until Further Notice',
+            'Switch to further notice', frequency=1,
+            payment_amount=10.00, payment_day_in_Week='Monday'
+            )
+        self.assertIn('SDKTST-', req)
+
+    def test_weekly_initial_amount(self):
+        req = self.eazy.contract(
+            '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+            '2019-07-15', False, 'Until Further Notice',
+            'Switch to further notice', frequency=1,
+            payment_amount=10.00, payment_day_in_week='Monday',
+            initial_amount=10.50
+            )
+        self.assertIn('SDKTST-', req)
+
+    def test_weekly_extra_initial_amount(self):
+        req = self.eazy.contract(
+            '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+            '2019-07-15', False, 'Until Further Notice',
+            'Switch to further notice', frequency=1,
+            payment_amount=10.00, payment_day_in_week='Monday',
+            extra_initial_amount=10.50
+            )
+        self.assertIn('SDKTST-', req)
+
+    def test_weekly_final_amount(self):
+        req = self.eazy.contract(
+            '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+            '2019-07-15', False, 'Until Further Notice',
+            'Switch to further notice', frequency=1,
+            payment_amount=10.00, payment_day_in_week='Monday',
+            final_amount=10.50
+            )
+        self.assertIn('SDKTST-', req)
+
+    def test_weekly_additional_reference(self):
+        req = self.eazy.contract(
+            '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+            '2019-07-15', False, 'Until Further Notice',
+            'Switch to further notice', frequency=1,
+            payment_amount=10.00, payment_day_in_week='Monday',
+            additional_reference='test-0001'
+            )
+        self.assertIn('SDKTST-', req)
+
+    def test_weekly_invalid_customer_throws_error(self):
+        with self.assertRaises(ResourceNotFoundError) as e:
+            self.eazy.contract(
+                '0a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+                '2019-08-15', False, 'End on exact date',
+                'Switch to further notice', frequency=1, payment_amount=10.00,
+                payment_day_in_week=1, termination_date='2019-10-15'
+            )
+        self.assertIn('The requested resource could not', str(e.exception))
+
+    def test_weekly_invalid_start_date_throws_error(self):
+        s_contracts['auto_start_date'] = False
+        with self.assertRaises(InvalidStartDateError) as e:
+            self.eazy.contract(
+                '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+                '2019-05-15', False, 'End on exact date',
+                'Switch to further notice', frequency=1, payment_amount=10.00,
+                payment_day_in_week=1, termination_date='2019-10-15'
+            )
+        self.assertIn('is not a valid start date', str(e.exception))
+
+    def test_weekly_invalid_payment_date_in_week_throws_error(self):
+        with self.assertRaises(InvalidParameterError) as e:
+            self.eazy.contract(
+                '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+                '2019-08-15', False, 'End on exact date',
+                'Switch to further notice', frequency=1, payment_amount=10.00,
+                payment_day_in_week=6, termination_date='2019-10-15'
+            )
+        self.assertIn('must be set to 15', str(e.exception))
+
+    def test_weekly_frequency_must_be_passed(self):
+        with self.assertRaises(InvalidParameterError) as e:
+            self.eazy.contract(
+                '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+                '2019-08-15', False, 'End on exact date',
+                'Switch to further notice', payment_amount=10.00,
+                payment_day_in_week=1, termination_date='2019-10-15'
+            )
+        self.assertIn('frequency must be passed', str(e.exception))
+
+    def test_weekly_payment_amount_must_be_passed(self):
+        with self.assertRaises(InvalidParameterError) as e:
+            self.eazy.contract(
+                '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+                '2019-08-15', False, 'End on exact date',
+                'Switch to further notice', frequency=1,
+                payment_day_in_week=1, termination_date='2019-10-15'
+            )
+        self.assertIn('payment amount must be passed', str(e.exception))
+
+    def test_weekly_certain_debits_number_of_debits_must_be_passed(self):
+        with self.assertRaises(InvalidParameterError) as e:
+            self.eazy.contract(
+                '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+                '2019-08-15', False, 'Take certain number of debits',
+                'Switch to further notice', frequency=1,
+                payment_amount=10.00, payment_day_in_week=1
+            )
+        self.assertIn('number_of_debits must be passed', str(e.exception))
+
+    def test_weekly_end_on_date_termination_date_must_be_passed(self):
+        with self.assertRaises(InvalidParameterError) as e:
+            self.eazy.contract(
+                '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+                '2019-08-15', False, 'End on exact date',
+                'Switch to further notice', frequency=1,
+                payment_amount=10.00, payment_day_in_week=1
+            )
+        self.assertIn('termination_date must be passed', str(e.exception))
+
+    def test_weekly_end_on_exact_date_termination_date_cannot_be_less(self):
+        with self.assertRaises(InvalidParameterError) as e:
+            self.eazy.contract(
+                '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
+                '2019-08-15', False, 'End on exact date',
+                'Switch to further notice', frequency=1,
+                payment_amount=10.00, payment_day_in_week=1,
+                termination_date='2019-06-14'
+            )
+        self.assertIn('is not a valid termination date', str(e.exception))
+
     def test_monthly_post_contract_until_further_notice(self):
         req = self.eazy.contract(
             '310a826b-d095-48e7-a55a-19dba82c566f', 'monthly_free',

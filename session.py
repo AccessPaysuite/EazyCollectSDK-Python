@@ -55,7 +55,7 @@ class Session:
         self.headers = Session().headers
         self.endpoint = self.base_url + endpoint
         self.method = method
-        if params:
+        if params is not None:
             self.params = params
         else:
             self.params = None

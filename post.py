@@ -140,7 +140,7 @@ class Post:
             for key, value in method_arguments.items():
                 if key in required_parameters and value == '':
                     raise InvalidParameterError(
-                        key + ' cannot be empty.'
+                        '%s cannot be empty.' % key
                     )
                 elif value != '':
                     parameters.update({conversions[key]: value})
@@ -353,9 +353,9 @@ class Post:
                         )
                     else:
                         raise InvalidParameterError(
-                            'payment_day_in_month must be set to ' +
-                            parameters['start'][8:10] + ' if the start date'
-                            ' is set to ' + parameters['start']
+                            'payment_day_in_month must be set to %s if the'
+                            ' start date is set to %s'
+                            % (parameters['start'][8:10], parameters['start'])
                         )
                 else:
                     contract_checks.check_payment_day_in_month(
@@ -374,31 +374,30 @@ class Post:
                         )
                     else:
                         raise InvalidParameterError(
-                            'payment_month_in_year must be set to ' +
-                            parameters['start'][5:7] + ' if the start date'
-                            ' is set to ' + parameters['start']
+                            'payment_month_in_year must be set to %s if the'
+                            ' start date is set to %s'
+                            % (parameters['start'][5:7], parameters['start'])
                         )
                 else:
                     contract_checks.check_payment_month_in_year(
                         payment_month_in_year
                     )
 
-            if str(payment_day_in_month) != parameters['start'][8:10]:
-                if s_contracts['auto_fix_payment_day_in_month']:
-                    pdim = parameters['start'][8:10]
-                    del parameters['paymentDayInMonth']
-                    parameters.update({'paymentDayInMonth': pdim})
-                elif payment_day_in_month == '':
-                    raise InvalidParameterError(
-                        'payment_day_in_month must be passed on monthly'
-                        ' contracts'
-                    )
+                if str(payment_day_in_month) != parameters['start'][8:10]:
+                    if s_contracts['auto_fix_payment_day_in_month']:
+                        pdim = parameters['start'][8:10]
+                        del parameters['paymentDayInMonth']
+                        parameters.update({'paymentDayInMonth': pdim})
+                    elif payment_day_in_month == '':
+                        raise InvalidParameterError(
+                            'payment_day_in_month must be passed on monthly'
+                            ' contracts'
+                        )
                 else:
                     raise InvalidParameterError(
-                        'payment_day_in_month must be set to ' +
-                        parameters['start'][8:10] + ' if the start date'
-                                                    ' is set to ' + parameters[
-                            'start']
+                        'payment_day_in_month must be set to %s if the start'
+                        ' date is set to %s'
+                        % (parameters['start'][8:10], parameters['start'])
                     )
             else:
                 contract_checks.check_payment_day_in_month(
@@ -461,7 +460,13 @@ class Post:
         """
         self.api.endpoint = 'contract/%s/cancel' % contract
         response = self.api.post()
-        return response
+
+        if 'Contract cancelled' not in response:
+            return(
+                'Direct Debit ID %s has not been cancelled.' % contract
+            )
+        else:
+            return response
 
     @exceptions.common_exceptions_decorator
     def archive_contract(self, contract):
@@ -554,20 +559,9 @@ class Post:
             'comment': 'comment',
             'is_credit': 'isCredit',
         }
-        try:
-            if float(collection_amount) >= 0.01:
-                pass
-            else:
-                raise InvalidParameterError(
-                    'The collection amount must be positive. Zero or'
-                    ' non-negative amounts are not allowed.'
-                )
-        except:
-            raise InvalidParameterError(
-                'collection_amount must be a number.'
-            )
         parameters = {}
         # Contract validations
+        payment_checks.check_collection_amount(collection_amount)
         collection = payment_checks.check_collection_date(collection_date)
 
         if is_credit:

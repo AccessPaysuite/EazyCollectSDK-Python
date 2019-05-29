@@ -5,6 +5,7 @@ from settings import payments as s_payments
 from warnings import warn
 from exceptions import InvalidParameterError
 
+
 def check_collection_date(collection_date):
     date_format = '%Y-%m-%d'
     desired_date = datetime.strptime(collection_date, date_format).date()
@@ -38,3 +39,18 @@ def is_credit_allowed_check():
             ' automatically disabled.'
         )
         return False
+
+
+def check_collection_amount(collection_amount):
+    try:
+        if float(collection_amount) >= 0.01:
+            pass
+        else:
+            raise InvalidParameterError(
+                'The collection amount must be positive. Zero or'
+                ' non-negative amounts are not allowed.'
+            )
+    except:
+        raise InvalidParameterError(
+            'collection_amount must be a number.'
+        )

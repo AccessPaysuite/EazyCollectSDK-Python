@@ -4,6 +4,7 @@ from exceptions import InvalidParameterError
 from exceptions import ResourceNotFoundError
 from utils import customer_checks
 from utils import contract_checks
+from utils import payment_checks
 
 
 class Patch:
@@ -14,13 +15,11 @@ class Patch:
         self.api = session.Session()
 
     @exceptions.common_exceptions_decorator
-    def customer(
-            self, customer, email='', title='', date_of_birth='',
+    def customer(self, customer, email='', title='', date_of_birth='',
             first_name='', surname='', company_name='', line1='', post_code='',
             account_number='', sort_code='', account_holder_name='',
             home_phone='', mobile_phone='', work_phone='', line2='',
-            line3='', line4='', initials=''
-                 ):
+            line3='', line4='', initials=''):
         """
         Modify a customer in ECM3
 
@@ -81,9 +80,12 @@ class Patch:
             'work_phone': 'workPhone',
             'mobile_phone': 'mobilePhone',
         }
-        parameters = {}
 
+        # A blank list of parameters to be updated later
+        parameters = {}
+        # We reference the key to avoid localization issues
         key = None
+
         try:
             for key, value in method_arguments.items():
                 if key == 'customer':
@@ -91,17 +93,20 @@ class Patch:
                 else:
                     parameters.update({conversions[key]: value})
         except KeyError:
+            # Throw custom error for more verbose details on cause
             raise exceptions.ParameterNotAllowedError(
                 '%s is not an acceptable argument for this call, refer'
                 'to the man page for all available arguments' % key
             )
 
-        # A collection of tests against required params
+        # As none of the params are required, we manually reference them
         if post_code != '':
             customer_checks.check_postcode_is_valid_uk_format(post_code)
         elif email != '':
             customer_checks.check_email_address_format(email)
         elif account_number != '':
+            # We provide dummy data here as we are only testing against
+            # the account number
             customer_checks.check_bank_details_format(
                 account_number, '123456', 'Dummy data'
             )
@@ -114,45 +119,44 @@ class Patch:
                 '12345678', '123456', account_holder_name
             )
 
-        self.api.endpoint = 'customer/' + customer
+        self.api.endpoint = 'customer/%s' % customer
         self.api.params = parameters
         response = self.api.patch()
 
         if 'Customer updated' in response:
-            return 'customer ' + customer + ' updated successfully'
+            return 'customer %s updated successfully' % customer
 
         return response
 
     @exceptions.common_exceptions_decorator
-    def contract_amount(self, contract, amount, comment):
+    def contract_amount(self, contract, collection_amount, comment):
         # Get all method arguments
         method_arguments = locals()
         # We will not be passing self into ECM3
         del method_arguments['self']
         # A set of pythonic arguments and their ECM3 counterparts
         parameters = {
-            'amount': amount,
+            'amount': collection_amount,
             'comment': comment,
         }
+
         for key, value in method_arguments.items():
             if value == '':
                 raise InvalidParameterError(
-                    key + ' cannot be empty.'
+                    '%s cannot be empty.' % key
                 )
-        try:
-            am = float(amount)
-        except:
-            raise InvalidParameterError('amount must be a number.')
+        payment_checks.check_collection_amount(collection_amount)
 
-        self.api.endpoint = 'contract/' + contract + '/amount'
+        self.api.endpoint = 'contract/%s/amount' % contract
         self.api.params = parameters
         response = self.api.patch()
 
         if 'Contract updated' in response:
-            return 'Contract ' + contract + ' amount updated to ' + str(amount)
+            return 'Contract %s collection amount has been updated to %s' \
+                   % (contract, collection_amount)
         elif 'Contract not found' in response:
             raise ResourceNotFoundError(
-                contract + ' is not a contract belonging to this client.'
+                '%s is not a contract belonging to this client.' % contract
             )
         return response
 
@@ -178,7 +182,7 @@ class Patch:
         for key, value in method_arguments.items():
             if value == '' and key != 'next_payment_amount':
                 raise InvalidParameterError(
-                    key + ' cannot be empty.'
+                    '%s cannot be empty.' % key
                 )
         if amend_next_payment and next_payment_amount == '':
             raise InvalidParameterError(
@@ -187,15 +191,15 @@ class Patch:
             )
 
         contract_checks.check_payment_day_in_month(new_day)
-        self.api.endpoint = 'contract/' + contract + '/monthly'
+        self.api.endpoint = 'contract/%s/monthly' % contract
         self.api.params = parameters
         response = self.api.patch()
 
         if 'Contract updated' in response:
-            return 'Contract ' + contract + ' day updated to ' + str(new_day)
+            return 'Contract %s day updated to %s' % (contract, str(new_day))
         elif 'Contract not found' in response:
             raise ResourceNotFoundError(
-                contract + ' is not a contract belonging to this client.'
+                '%s is not a contract belonging to this client.' % contract
             )
         return response
 
@@ -218,7 +222,7 @@ class Patch:
         for key, value in method_arguments.items():
             if value == '' and key != 'next_payment_amount':
                 raise InvalidParameterError(
-                    key + ' cannot be empty.'
+                    '%s cannot be empty.' % key
                 )
         if amend_next_payment and next_payment_amount == '':
             raise InvalidParameterError(
@@ -226,15 +230,44 @@ class Patch:
                 ' set to true.'
             )
         contract_checks.check_payment_day_in_month(new_day)
-        self.api.endpoint = 'contract/' + contract + '/annual'
+        self.api.endpoint = 'contract/%s/annual' % contract
         self.api.params = parameters
         response = self.api.patch()
 
         if 'Contract updated' in response:
-            return 'Contract ' + contract + ' day updated to ' + \
-                   str(new_day) + ' and month updated to ' + str(new_month)
+            return 'Contract %s day updated to %s and month updated to %s' \
+                % (contract, str(new_day), str(new_month))
         elif 'Contract not found' in response:
             raise ResourceNotFoundError(
-                contract + ' is not a contract belonging to this client.'
+                '%s is not a contract belonging to this client.' % contract
             )
+        return response
+
+    @exceptions.common_exceptions_decorator
+    def payment(self, contract, payment, collection_amount, collection_date,
+                comment):
+        # Get all method arguments
+        method_arguments = locals()
+        # We will not be passing self into ECM3
+        del method_arguments['self']
+        del method_arguments['contract']
+        del method_arguments['payment']
+        # A set of pythonic arguments and their ECM3 counterparts
+        payment_checks.check_collection_amount(collection_amount)
+        collection = payment_checks.check_collection_date(collection_date)
+
+        parameters = {
+            'amount': collection_amount,
+            'date': collection_date,
+            'comment': comment,
+        }
+
+        if collection:
+            del parameters['date']
+            parameters.update({'date': collection})
+
+        self.api.endpoint = 'contract/%s/payment/%s' % (contract, payment)
+        self.api.params = parameters
+        response = self.api.patch()
+
         return response
