@@ -178,6 +178,9 @@ class Get:
         self.api.params = {'rows': number_of_rows}
         response = self.api.get()
 
+        if response == '{"Payments":[]}':
+            return 'This contract does not own any payments.'
+
         return response
 
     @exceptions.common_exceptions_decorator
@@ -196,7 +199,7 @@ class Get:
         :Returns:
         payment json objects
         """
-        self.api.endpoint = '/contract/%s/payment/%s/' % contract, payment
+        self.api.endpoint = '/contract/%s/payment/%s/' % (contract, payment)
         response = self.api.get()
 
         return response

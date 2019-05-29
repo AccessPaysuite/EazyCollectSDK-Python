@@ -549,14 +549,26 @@ class Post:
         del method_arguments['contract']
         # A set of pythonic arguments and their ECM3 counterparts
         conversions = {
-            'collection_amount': 'scheduleName',
-            'collection_date': 'start',
+            'collection_amount': 'amount',
+            'collection_date': 'date',
             'comment': 'comment',
             'is_credit': 'isCredit',
         }
+        try:
+            if float(collection_amount) >= 0.01:
+                pass
+            else:
+                raise InvalidParameterError(
+                    'The collection amount must be positive. Zero or'
+                    ' non-negative amounts are not allowed.'
+                )
+        except:
+            raise InvalidParameterError(
+                'collection_amount must be a number.'
+            )
         parameters = {}
         # Contract validations
-        start = payment_checks.check_collection_date(collection_date)
+        collection = payment_checks.check_collection_date(collection_date)
 
         if is_credit:
             e = payment_checks.is_credit_allowed_check()
@@ -575,9 +587,20 @@ class Post:
                 ' to the man page for all available arguments' % key
             )
 
+        if collection:
+            del parameters['date']
+            parameters.update({'date': collection})
+
         self.api.endpoint = 'contract/%s/payment' % contract
         self.api.params = parameters
         response = self.api.post()
+
+        if 'Contract not found' in response:
+            raise InvalidParameterError(
+                'The specified contract GUID does not relate to a customer'
+                ' within ECM3.'
+            )
+
         return response
 
     # @exceptions.common_exceptions_decorator
