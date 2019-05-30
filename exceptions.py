@@ -5,9 +5,6 @@ eazyapi.excepions
 This module contains the set of EazyAPI's exceptions
 """
 from functools import wraps
-from settings import current_environment
-from settings import ecm3_client_details
-from settings import sandbox_client_details
 
 
 class EazyAPIException(IOError):
@@ -69,9 +66,11 @@ class RecordAlreadyExistsError(EazyAPIException):
     """ The record trying to be created already exists.
     """
 
+
 class InvalidSettingsConfiguration(EazyAPIException):
     """ A settings is not correct
     """
+
 
 def common_exceptions_decorator(funct):
     @wraps(funct)

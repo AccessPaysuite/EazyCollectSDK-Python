@@ -1,4 +1,4 @@
-import session
+from session import Session
 from settings import contracts as s_contracts
 from warnings import warn
 from utils import customer_checks
@@ -17,7 +17,7 @@ class Post:
         """
         A collection of POST requests made to the ECM3 API
         """
-        self.api = session.Session()
+        self.api = Session()
 
     @common_exceptions_decorator
     def callback_url(self, callback_url):
@@ -497,6 +497,12 @@ class Post:
         """
         self.api.endpoint = 'contract/%s/archive' % contract
         response = self.api.post()
+
+        if 'Contract is already archived' in response:
+            return(
+                'Contract %s is already archived. No action will be taken.' %
+                contract
+            )
         return response
 
     @common_exceptions_decorator

@@ -1,8 +1,9 @@
-import session
-import settings
+from session import Session
+from settings import warnings as w_settings
 from warnings import warn
 from exceptions import common_exceptions_decorator
 from exceptions import InvalidParameterError
+from utils import schedules
 
 
 class Get:
@@ -10,7 +11,7 @@ class Get:
         """
         A collection of GET requests made to the ECM3 API
         """
-        self.api = session.Session()
+        self.api = Session()
 
     @common_exceptions_decorator
     def callback_url(self,):
@@ -110,7 +111,7 @@ class Get:
 
         parameters = {}
         key = None
-        if settings.warnings['customer_search'] and all(
+        if w_settings['customer_search'] and all(
                 value == '' for value in method_arguments.values()):
             warn('Retrieving customers without using any search times '
                  'may take some time.')
@@ -223,4 +224,5 @@ class Get:
         """
         self.api.endpoint = 'schedules'
         response = self.api.get()
+        schedules.read_available_schedules_file(response)
         return response
