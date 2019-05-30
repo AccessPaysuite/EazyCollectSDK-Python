@@ -1,7 +1,8 @@
-import session
-import exceptions
+from session import Session
+from exceptions import common_exceptions_decorator
 from exceptions import InvalidParameterError
 from exceptions import ResourceNotFoundError
+from exceptions import ParameterNotAllowedError
 from utils import customer_checks
 from utils import contract_checks
 from utils import payment_checks
@@ -12,14 +13,14 @@ class Patch:
         """
         A collection of PATCH requests made to the ECM3 API
         """
-        self.api = session.Session()
+        self.api = Session()
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def customer(self, customer, email='', title='', date_of_birth='',
-            first_name='', surname='', company_name='', line1='', post_code='',
-            account_number='', sort_code='', account_holder_name='',
-            home_phone='', mobile_phone='', work_phone='', line2='',
-            line3='', line4='', initials=''):
+                 first_name='', surname='', company_name='', line1='',
+                 post_code='', account_number='', sort_code='',
+                 account_holder_name='', home_phone='', mobile_phone='',
+                 work_phone='', line2='', line3='', line4='', initials=''):
         """
         Modify a customer in ECM3
 
@@ -94,7 +95,7 @@ class Patch:
                     parameters.update({conversions[key]: value})
         except KeyError:
             # Throw custom error for more verbose details on cause
-            raise exceptions.ParameterNotAllowedError(
+            raise ParameterNotAllowedError(
                 '%s is not an acceptable argument for this call, refer'
                 'to the man page for all available arguments' % key
             )
@@ -128,7 +129,7 @@ class Patch:
 
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def contract_amount(self, contract, collection_amount, comment):
         # Get all method arguments
         method_arguments = locals()
@@ -160,11 +161,11 @@ class Patch:
             )
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def contract_day_weekly(self,):
         return 'this function currently does not work as intended.'
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def contract_date_monthly(self, contract, new_day, comment,
                               amend_next_payment, next_payment_amount=''):
         # Get all method arguments
@@ -203,7 +204,7 @@ class Patch:
             )
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def contract_date_annually(self, contract, new_day, new_month, comment,
                                amend_next_payment, next_payment_amount=''):
         # Get all method arguments
@@ -243,7 +244,7 @@ class Patch:
             )
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def payment(self, contract, payment, collection_amount, collection_date,
                 comment):
         # Get all method arguments

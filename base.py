@@ -14,4 +14,3 @@ class EazyAPI:
         self.post = Post()
         self.patch = Patch()
         self.delete = Delete()
-

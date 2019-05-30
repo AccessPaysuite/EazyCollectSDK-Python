@@ -1,8 +1,9 @@
 import session
 import settings
 from warnings import warn
-import exceptions
-import json
+from exceptions import common_exceptions_decorator
+from exceptions import InvalidParameterError
+
 
 class Get:
     def __init__(self):
@@ -11,7 +12,7 @@ class Get:
         """
         self.api = session.Session()
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def callback_url(self,):
         """
         Get the current callback URL from ECM3
@@ -31,7 +32,7 @@ class Get:
             # Use requests.json to get the part of the response we need.
             return 'The callback URL is {}'.format(response['Message'])
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def customers(self, email='', title='', search_from='', search_to='',
                   date_of_birth='', customer_reference='', first_name='',
                   surname='', company_name='', post_code='', account_number='',
@@ -120,7 +121,7 @@ class Get:
                     parameters.update({conversions[key]: value})
         except KeyError:
             # Raise custom error if the passed parameter is not defined
-            raise exceptions.InvalidParameterError(
+            raise InvalidParameterError(
                 '%s is not an acceptable argument for this call, refer'
                 'to the man page for all available arguments' % key
             )
@@ -135,7 +136,7 @@ class Get:
             return 'No customers could be found using the search terms:' \
                    '%s' % parameters
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def contracts(self, customer):
         """
         Return all contracts belonging to a specified customer.
@@ -157,7 +158,7 @@ class Get:
         else:
             return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def payments(self, contract, number_of_rows=100):
         """
         Return all payments belonging to a contract.
@@ -183,7 +184,7 @@ class Get:
 
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def payments_single(self, contract, payment):
         """
         Return an individual payment from a specific contract
@@ -204,7 +205,7 @@ class Get:
 
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def schedules(self):
         """
         Return all available schedules from ECM3

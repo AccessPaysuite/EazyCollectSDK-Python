@@ -1,6 +1,4 @@
 from eazyapi import base
-from settings import payments as p_settings
-from exceptions import InvalidParameterError
 import unittest
 
 

@@ -1,17 +1,15 @@
-import session
-import settings
-from warnings import warn
-import exceptions
-import json
+from session import Session
+from exceptions import common_exceptions_decorator
+
 
 class Delete:
     def __init__(self):
         """
         A collection of DELETE requests made to the ECM3 API
         """
-        self.api = session.Session()
+        self.api = Session()
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def callback_url(self,):
         """
         Delete the current callback URL from ECM3
@@ -31,7 +29,7 @@ class Delete:
             # Use requests.json to get the part of the response we need.
             return 'Callback URL deleted.'
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def payment(self, contract, payment, comment):
         """
         Delete a payment from ECM3, as long as it hasn't already been

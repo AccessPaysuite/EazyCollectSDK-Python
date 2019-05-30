@@ -1,12 +1,15 @@
 import session
 from settings import contracts as s_contracts
 from warnings import warn
-import exceptions
 from utils import customer_checks
 from utils import contract_checks
 from utils import payment_checks
+from exceptions import EazyAPIException
+from exceptions import common_exceptions_decorator
 from exceptions import ParameterNotAllowedError
 from exceptions import InvalidParameterError
+from exceptions import ResourceNotFoundError
+from exceptions import RecordAlreadyExistsError
 
 
 class Post:
@@ -16,7 +19,7 @@ class Post:
         """
         self.api = session.Session()
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def callback_url(self, callback_url):
         """
         Create or update the endpoint for data returned from ECM3
@@ -37,18 +40,18 @@ class Post:
         response = self.api.post()
 
         if 'ExceptionMessage' in str(response):
-            raise exceptions.EazyAPIException(
+            raise EazyAPIException(
                 'The API serializer is not enabled for this account. Please'
                 'contact us on help@eazycollect.co.uk for assistance'
             )
         elif 'Updated' not in str(response):
-            raise exceptions.EazyAPIException(
+            raise EazyAPIException(
                 'For an unexpected reason, the new callback URL was not'
                 'created.'
             )
         return 'The new callback url is %s' % callback_url
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def customer(self, email, title, customer_reference, first_name, surname,
                  line1, post_code, account_number, sort_code,
                  account_holder_name, line2='', line3='', line4='',
@@ -145,7 +148,7 @@ class Post:
                 elif value != '':
                     parameters.update({conversions[key]: value})
         except KeyError:
-            raise exceptions.ParameterNotAllowedError(
+            raise ParameterNotAllowedError(
                 '%s is not an acceptable argument for this call, refer'
                 'to the man page for all available arguments' % key
             )
@@ -161,13 +164,13 @@ class Post:
         response = self.api.post()
         if 'There is an existing Customer with the same Client and Customer' \
            ' ref in the database already' in str(response):
-            raise exceptions.RecordAlreadyExistsError(
+            raise RecordAlreadyExistsError(
                 'A customer with the given customer_reference already exists.'
                 ' Please change the customer reference and re-submit.'
             )
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def contract(self, customer, schedule_name, start_date, gift_aid,
                  termination_type, at_the_end, number_of_debits='',
                  frequency='', initial_amount='', extra_initial_amount='',
@@ -268,7 +271,7 @@ class Post:
                 if value != '':
                     parameters.update({conversions[key]: value})
         except KeyError:
-            raise exceptions.ParameterNotAllowedError(
+            raise ParameterNotAllowedError(
                 '%s is not an acceptable argument for this call, refer'
                 ' to the man page for all available arguments' % key
             )
@@ -436,7 +439,7 @@ class Post:
         response = self.api.post()
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def cancel_direct_debit(self, contract,):
         """
         Cancel a Direct Debit within ECM3
@@ -461,14 +464,14 @@ class Post:
         self.api.endpoint = 'contract/%s/cancel' % contract
         response = self.api.post()
 
-        if 'Contract cancelled' not in response:
-            return(
-                'Direct Debit ID %s has not been cancelled.' % contract
+        if 'Contract not found' in response:
+            raise ResourceNotFoundError(
+                'Contract %s not found. No action has been taken.'
             )
         else:
             return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def archive_contract(self, contract):
         """
         Archive a Direct Debit within ECM3
@@ -487,7 +490,7 @@ class Post:
         - contract - The GUID of the contract ot be archived
 
         :Example:
-        cancel_direct_debit('archive_contract')
+        archive_contract('42217d45-cf22-4430-ab02-acc1f8a2d020')
 
         :Returns:
         contract json object
@@ -496,7 +499,7 @@ class Post:
         response = self.api.post()
         return response
 
-    @exceptions.common_exceptions_decorator
+    @common_exceptions_decorator
     def reactivate_direct_debit(self, contract):
         """
         Reactivate a Direct Debit within ECM3
@@ -509,7 +512,7 @@ class Post:
         - contract - The GUID of the contract to be re-activated
 
         :Example:
-        cancel_direct_debit('archive_contract')
+        reactivate_direct_debit('42217d45-cf22-4430-ab02-acc1f8a2d020')
 
         :Returns:
         contract json object
@@ -518,10 +521,98 @@ class Post:
         response = self.api.post()
         return response
 
-    # @exceptions.common_exceptions_decorator
-    # def restart_contract(self):
+    @common_exceptions_decorator
+    def restart_contract(self, contract, termination_type, at_the_end,
+                         collection_amount='', initial_amount='',
+                         final_amount='', payment_day_in_month='',
+                         payment_month_in_year='', additional_reference=''):
+        """
+        Restart a contract within ECM3
 
-    @exceptions.common_exceptions_decorator
+        NOTE: Restarting a contract is fundamentally different to
+        reactivating a contract as it can only be performed if the
+        following criteria have been met
+
+        - The original contract was a fixed term which has expired
+        - The payment schedule has met its end naturally, and the
+            contract status has become 'Expired'
+
+        This call adds a new contract onto the end of the previous
+        contract, in effect 'recycling' the previous direct debit at
+        the bank which can save on Direct Debit setup charges.
+
+        :Required args:
+        - contract - The GUID of the contract to be restarted
+        - termination_type - The termination type of the restarted
+            contract
+        - at_the_end - What happens to the new contract after the
+            termination event has been triggered
+
+        :Optional args:
+        - payment_amount - Mandatory if the contract is not ad-hoc. The
+            regular collection amount for the restated contract
+        - initial_amount - Used if the first collection amount is
+            different from the rest. Not to be used on ad-hoc contracts.
+        - final_amount - Used if the final collection amount is
+            different from the rest. Not to be used on ad-hoc contracts.
+        - payment_day_in_month - The collection day for monthly
+            contracts. Accepts 1-28 or 'last day of month'
+        - additional_reference - An additional reference for the newly
+            created contract.
+
+        :Example:
+        restart_contract(
+            '42217d45-cf22-4430-ab02-acc1f8a2d020',
+            'Until further notice', 'Switch to further notice'
+        )
+
+        :Returns:
+        contract json object
+        """
+        # Perform several validation checks against arguments provided
+        method_arguments = locals()
+        # We will not need self or customer when passing parameters
+        del method_arguments['self']
+        del method_arguments['contract']
+        # A set of pythonic arguments and their ECM3 counterparts
+        conversions = {
+            'termination_type': 'terminationType',
+            'at_the_end': 'atTheEnd',
+            'initial_amount': 'initialAmount',
+            'collection_amount': 'amount',
+            'final_amount': 'finalAmount',
+            'payment_day_in_month': 'paymentDayInMonth',
+            'payment_month_in_year': 'paymentMonthInYear',
+            'termination_date': 'terminationDate',
+            'additional_reference': 'additionalReference',
+        }
+        parameters = {}
+        # Contract validations
+
+        # Avoid non-assignment warnings
+        key = None
+        try:
+            for key, value in method_arguments.items():
+                if value != '':
+                    parameters.update({conversions[key]: value})
+        except KeyError:
+            raise ParameterNotAllowedError(
+                '%s is not an acceptable argument for this call, refer'
+                ' to the man page for all available arguments' % key
+            )
+        self.api.params = parameters
+        self.api.endpoint = 'contract/%s/restart' % contract
+        response = self.api.post()
+
+        if 'Contract is not expired.' in response:
+            return(
+                'The contract %s is not expired, no action has been taken'
+                % contract
+            )
+
+        return response
+
+    @common_exceptions_decorator
     def payment(self, contract, collection_amount, collection_date,
                 comment, is_credit=False):
         """
@@ -576,7 +667,7 @@ class Post:
                 if value != '':
                     parameters.update({conversions[key]: value})
         except KeyError:
-            raise exceptions.ParameterNotAllowedError(
+            raise ParameterNotAllowedError(
                 '%s is not an acceptable argument for this call, refer'
                 ' to the man page for all available arguments' % key
             )
