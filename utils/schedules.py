@@ -3,6 +3,7 @@ from datetime import datetime
 from settings import other
 from settings import current_environment
 import json
+from get import Get
 
 
 base_path = Path(__file__).parent
@@ -10,7 +11,7 @@ sandbox_schedules_file = (base_path / '../includes/sandbox.csv').resolve()
 ecm3_schedules_file = (base_path / '../includes/ecm3.csv').resolve()
 
 
-def read_available_schedules_file(schedules_response):
+def read_available_schedules_file():
     # Check the current environment, and select the appropriate file
     if current_environment['env'] == 'sandbox':
         file = sandbox_schedules_file
@@ -37,7 +38,7 @@ def read_available_schedules_file(schedules_response):
             # Instantiate the JSON object to be written to
             schedules_json['schedule'] = []
             # Get the schedules from ECM3
-            schedules = schedules_response
+            schedules = Get.schedules()
             services_list = json.loads(schedules)
             # Read the schedules
             schedule_list = services_list['Services']
@@ -58,21 +59,21 @@ def read_available_schedules_file(schedules_response):
                         'ad_hoc': schedule_type,
                         'frequency': schedule['Frequency'],
                     })
-                        # We save the date in ISO format, but JSON cannot
-                        # parse a date
+                    # We save the date in ISO format, but JSON cannot
+                    # parse a date
                 schedules_json['last_update_date'] = ({
                     'last_updated': str(datetime.now().date())
                 })
             if day_difference >= 365 or other['force_schedule_updates']:
                 update_schedules_file(schedules_json)
 
-
             return schedules_json
+
         except:
             # Instantiate the JSON object to be written to
             schedules_json['schedule'] = []
             # Get the schedules from ECM3
-            schedules = schedules_response
+            schedules = Get.schedules()
             services_list = json.loads(schedules)
             # Read the schedules
             schedule_list = services_list['Services']

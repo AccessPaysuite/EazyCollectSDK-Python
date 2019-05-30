@@ -1,12 +1,8 @@
 from pathlib import Path
 from datetime import datetime
 from settings import other
-from settings import contracts as s_contracts
-from settings import direct_debit_processing_days
 from datetime import timedelta
-from warnings import warn
 from requests import get
-from exceptions import InvalidStartDateError
 
 base_path = Path(__file__).parent
 bank_holidays_file = (base_path / '../includes/holidays.csv').resolve()
@@ -20,8 +16,6 @@ def check_working_days_in_future(number_of_days):
     holidays = read_bank_holiday_file_and_check_if_update_needed()
     working_days = 0
     calendar_days = 0
-    # Get query date details
-    # Get todays date
     today_datetime = datetime.now()
     today_date = today_datetime.date()
     # We want to keep today_date constant for raising errors
@@ -32,10 +26,12 @@ def check_working_days_in_future(number_of_days):
             str(today_date) in holidays:
         # Should never need 10 iterations. We want the next working day
         for i in range(10):
-            iter = today_date + timedelta(i)
-            if iter.isoweekday() in range(1, 5) and str(iter) not in holidays:
+            iter_date = today_date + timedelta(i)
+            if iter_date.isoweekday() in range(1, 5) \
+                    and str(iter_date) not in holidays:
                 start_date += timedelta(i)
                 break
+
     while working_days <= (number_of_days - 1):
         working_date = start_date + timedelta(calendar_days)
         if working_date.isoweekday() != 6 and working_date.isoweekday() != 7 \
@@ -79,8 +75,8 @@ def read_bank_holiday_file_and_check_if_update_needed():
                     ' days. Updating......' % day_difference
                 )
                 new_holidays = get('https://www.gov.uk/bank-holidays.json')
-                holidays_json = new_holidays.json() \
-                    ['england-and-wales']['events']
+                holidays_json = new_holidays.json()['england-and-wales'] \
+                ['events']
 
                 for date in holidays_json:
                     # Add  bank holidays from or after the current year
@@ -115,4 +111,3 @@ def update_bank_holidays_file(bank_holiday_list):
         for date in bank_holiday_list:
             f.write('\n%s' % date)
     return 'Updated bank holidays file.'
-

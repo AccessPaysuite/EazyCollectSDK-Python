@@ -10,7 +10,7 @@ class Test(unittest.TestCase):
 
     def test_post_payment_all_valid_details(self):
         req = self.eazy.payment(
-            '2b62a358-9a1a-4c71-9450-e419e393dcd1', 10.00, '2019-07-15',
+            '1802e1dd-a657-428c-b8d0-ba162fc76203', 10.00, '2019-07-15',
             'test comment', False
         )
         self.assertIn('"Error":null', req)

@@ -1,6 +1,10 @@
 import requests
-import settings
-import exceptions
+from requests import session
+from settings import current_environment
+from settings import ecm3_client_details
+from settings import sandbox_client_details
+from exceptions import InvalidEnvironmentError
+from exceptions import UnsupportedHTTPMethodError
 from json import JSONDecodeError
 
 
@@ -10,23 +14,23 @@ class Session:
         Creates a new instance of the EazyAPI session
         """
         self.client_settings = None
-        self.environment = settings.current_environment['env'].lower()
+        self.environment = current_environment['env'].lower()
         # https://[[environment]].eazycollect.co.uk/
         acceptable_environments = {
             'ecm3',
             'sandbox',
         }
         if self.environment not in acceptable_environments:
-            raise exceptions.InvalidEnvironmentError(
+            raise InvalidEnvironmentError(
                 '%s is not a valid environment. The acceptable inputs'
                 ' are \n'
                 '- sandbox - a server for testing API calls\n'
                 '- live - the production ECM3 environment' % self.environment
             )
         elif self.environment == 'ecm3':
-            self.client_settings = settings.ecm3_client_details
+            self.client_settings = ecm3_client_details
         else:
-            self.client_settings = settings.sandbox_client_details
+            self.client_settings = sandbox_client_details
         # Get the client code for the configured environment
         self.client_code = self.client_settings['client_code']
         # The base URL for all requests sent to the API
@@ -40,7 +44,7 @@ class Session:
         self.endpoint = None
         self.method = None
 
-        self.session = requests.session()
+        self.session = session()
 
     def request(self, method, endpoint, params=None, headers=None):
         """
@@ -60,7 +64,7 @@ class Session:
         else:
             self.params = None
         if method not in(['GET', 'POST', 'PATCH', 'DELETE']):
-            raise exceptions.UnsupportedHTTPMethodError(
+            raise UnsupportedHTTPMethodError(
                 '%s is not a supported HTTP method when communicating '
                 'with ECM3. Valid methods are GET, POST, PATCH and'
                 'DELETE' % method
@@ -102,4 +106,4 @@ class Session:
         """
         Perform a DELETE request to a given endpoint in ECM3
         """
-        return self.request('DELETE', self.endpoint)
+        return self.request('DELETE', self.endpoint, self.params)

@@ -1,5 +1,6 @@
 from session import Session
 from exceptions import common_exceptions_decorator
+from exceptions import ResourceNotFoundError
 
 
 class Delete:
@@ -48,3 +49,16 @@ class Delete:
         :Returns:
         customer json object(s)
         """
+        parameters = {
+            'comment': comment
+        }
+        self.api.params = parameters
+        self.api.endpoint = 'contract/%s/payment/%s' % (contract, payment)
+        response = self.api.delete()
+
+        if 'Payment not found' in response:
+            raise ResourceNotFoundError(
+                'The payment %s either doesn\'t exist or has already been'
+                ' deleted.' % payment
+            )
+        return response

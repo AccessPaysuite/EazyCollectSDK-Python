@@ -1,61 +1,31 @@
 from eazyapi import base
-from settings import payments as p_settings
-from exceptions import InvalidParameterError
+from exceptions import ResourceNotFoundError
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().post
+        self.eazy = base.EazyAPI().delete
 
-    def test_post_payment_all_valid_details(self):
+    def test_delete_payment(self):
         req = self.eazy.payment(
-            '2b62a358-9a1a-4c71-9450-e419e393dcd1', 10.00, '2019-07-15',
-            'test comment', False
+            '1802e1dd-a657-428c-b8d0-ba162fc76203',
+            '26a77d64-f21d-43cc-9dc4-765d3a3fc6c1', 'Deleted',
         )
-        self.assertIn('"Error":null', req)
+        self.assertIn('Payment deleted', req)
 
-    def test_auto_fix_payment_date(self):
-        p_settings['auto_fix_payment_date'] = True
-        req = self.eazy.payment(
-            '2b62a358-9a1a-4c71-9450-e419e393dcd1', 10.00, '2018-07-15',
-            'test comment', False
-        )
-        self.assertIn('"Error":null', req)
-
-    def test_post_payment_accepts_no_comment(self):
-        req = self.eazy.payment(
-            '2b62a358-9a1a-4c71-9450-e419e393dcd1', 10.00, '2019-07-15',
-            '', False
-        )
-        self.assertIn('"Error":null', req)
-
-    def test_post_payment_invalid_contract_throws_error(self):
-        with self.assertRaises(InvalidParameterError) as e:
+    def test_delete_payment_non_payment_throws_error(self):
+        with self.assertRaises(ResourceNotFoundError) as e:
             self.eazy.payment(
-                '1b62a358-9a1a-4c71-9450-e419e393dcd1', 10.00, '2019-07-15',
-                '', False
+                '1802e1dd-a657-428c-b8d0-ba162fc76203',
+                '26a77d64-f21d-43cc-9dc4-765d3a3fc6c1', 'Deleted',
             )
-        self.assertIn(
-            'The specified contract GUID does not relate', str(e.exception)
-        )
+        self.assertIn('either doesn\'t exist', str(e.exception))
 
-    def test_post_payment_non_positive_amount_throws_error(self):
-        with self.assertRaises(InvalidParameterError) as e:
+    def test_delete_payment_non_contract_throws_error(self):
+        with self.assertRaises(ResourceNotFoundError) as e:
             self.eazy.payment(
-                '1b62a358-9a1a-4c71-9450-e419e393dcd1', 0, '2019-07-15',
-                '', False
+                '802e1dd-a657-428c-b8d0-ba162fc76203',
+                '26a77d64-f21d-43cc-9dc4-765d3a3fc6c1', 'Deleted',
             )
-        self.assertIn(
-            'collection_amount must be a number', str(e.exception)
-        )
-
-    def test_post_payment_invalid_date_throws_error(self):
-        with self.assertRaises(InvalidParameterError) as e:
-            self.eazy.payment(
-                '1b62a358-9a1a-4c71-9450-e419e393dcd1', 1.0, '2018-07-15',
-                '', False
-            )
-        self.assertIn(
-            '2018-07-15 is not a valid start date.', str(e.exception)
-        )
+        self.assertIn('resource could not be found', str(e.exception))

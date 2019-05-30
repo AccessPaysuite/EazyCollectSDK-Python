@@ -3,7 +3,6 @@ from settings import warnings as w_settings
 from warnings import warn
 from exceptions import common_exceptions_decorator
 from exceptions import InvalidParameterError
-from utils import schedules
 
 
 class Get:
@@ -224,5 +223,4 @@ class Get:
         """
         self.api.endpoint = 'schedules'
         response = self.api.get()
-        schedules.read_available_schedules_file(response)
         return response

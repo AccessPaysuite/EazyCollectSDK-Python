@@ -5,6 +5,7 @@ from post import Post
 from patch import Patch
 from delete import Delete
 
+
 class EazyAPI:
     """
     Creates a new instance of the EazyAPI
