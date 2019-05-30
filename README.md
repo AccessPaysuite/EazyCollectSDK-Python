@@ -1,1 +1,1 @@
-# EazyCollectAPIv3-SDK---Python
+# EazyCollectSDK-Python
