@@ -10,7 +10,7 @@ class Get:
         """
         A collection of GET requests made to the ECM3 API
         """
-        self.api = Session()
+        self.sdk = Session()
 
     @common_exceptions_decorator
     def callback_url(self,):
@@ -23,8 +23,8 @@ class Get:
         :Returns:
         'The current callback url is example.com'
         """
-        self.api.endpoint = 'BACS/callback'
-        response = self.api.get()
+        self.sdk.endpoint = 'BACS/callback'
+        response = self.sdk.get()
         # NULL will be returned if a callback URL does not exist
         if str(response) == '{"Message":null}':
             return 'A callback URL has not been set'
@@ -126,9 +126,9 @@ class Get:
                 'to the man page for all available arguments' % key
             )
 
-        self.api.endpoint = 'customer'
-        self.api.params = parameters
-        response = self.api.get()
+        self.sdk.endpoint = 'customer'
+        self.sdk.params = parameters
+        response = self.sdk.get()
 
         if str(response) != '{"Customers":[]}':
             return response
@@ -150,8 +150,8 @@ class Get:
         :Returns:
         contract json objects
         """
-        self.api.endpoint = 'customer/%s/contract' % customer
-        response = self.api.get()
+        self.sdk.endpoint = 'customer/%s/contract' % customer
+        response = self.sdk.get()
 
         if '"Contracts":[]' in str(response):
             return 'The customer %s does not own any contracts' % customer
@@ -175,9 +175,9 @@ class Get:
         :Returns:
         payment json objects
         """
-        self.api.endpoint = '/contract/%s/payment' % contract
-        self.api.params = {'rows': number_of_rows}
-        response = self.api.get()
+        self.sdk.endpoint = '/contract/%s/payment' % contract
+        self.sdk.params = {'rows': number_of_rows}
+        response = self.sdk.get()
 
         if response == '{"Payments":[]}':
             return 'This contract does not own any payments.'
@@ -200,8 +200,8 @@ class Get:
         :Returns:
         payment json objects
         """
-        self.api.endpoint = '/contract/%s/payment/%s/' % (contract, payment)
-        response = self.api.get()
+        self.sdk.endpoint = '/contract/%s/payment/%s/' % (contract, payment)
+        response = self.sdk.get()
 
         return response
 
@@ -221,6 +221,6 @@ class Get:
         :Returns:
         schedule json objects
         """
-        self.api.endpoint = 'schedules'
-        response = self.api.get()
+        self.sdk.endpoint = 'schedules'
+        response = self.sdk.get()
         return response

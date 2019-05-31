@@ -6,7 +6,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().post
+        self.eazy = main.EazySDK().post
 
     def test_post_payment_all_valid_details(self):
         req = self.eazy.payment(

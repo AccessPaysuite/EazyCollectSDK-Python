@@ -5,7 +5,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().delete
+        self.eazy = main.EazySDK().delete
 
     def test_delete_payment(self):
         req = self.eazy.payment(

@@ -1,3 +1,3 @@
 name = 'eazysdk'
 
-from eazyapi.main import EazyAPI
+from eazysdk.main import EazySDK

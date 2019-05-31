@@ -1,10 +1,10 @@
 current_environment = {
-    'env': 'sandbox'    # sandbox || ecm3
+    'env': ''    # sandbox || ecm3
 }
 
 sandbox_client_details = {
-    'client_code': 'SDKTST',
-    'api_key': 'hkZujzFR2907XAtYe6qkKRsBo',
+    'client_code': '',
+    'api_key': '',
 }
 
 ecm3_client_details = {

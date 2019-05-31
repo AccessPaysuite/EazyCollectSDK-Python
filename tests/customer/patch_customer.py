@@ -6,7 +6,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().patch
+        self.eazy = main.EazySDK().patch
 
     def test_updating_all_customer_details_returns_expected_response(self):
         r = self.eazy.customer(

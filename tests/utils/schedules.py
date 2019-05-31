@@ -13,7 +13,7 @@ ecm3_schedules = (base_path / '../../includes/ecm3.csv').resolve()
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().get
+        self.eazy = main.EazySDK().get
 
     def test_get_schedules_sandbox_write_to_sandbox_csv(self):
         current_environment['env'] = 'sandbox'

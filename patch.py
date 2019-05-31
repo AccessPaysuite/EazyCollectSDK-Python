@@ -13,7 +13,7 @@ class Patch:
         """
         A collection of PATCH requests made to the ECM3 API
         """
-        self.api = Session()
+        self.sdk = Session()
 
     @common_exceptions_decorator
     def customer(self, customer, email='', title='', date_of_birth='',
@@ -120,9 +120,9 @@ class Patch:
                 '12345678', '123456', account_holder_name
             )
 
-        self.api.endpoint = 'customer/%s' % customer
-        self.api.params = parameters
-        response = self.api.patch()
+        self.sdk.endpoint = 'customer/%s' % customer
+        self.sdk.params = parameters
+        response = self.sdk.patch()
 
         if 'Customer updated' in response:
             return 'customer %s updated successfully' % customer
@@ -148,9 +148,9 @@ class Patch:
                 )
         payment_checks.check_collection_amount(collection_amount)
 
-        self.api.endpoint = 'contract/%s/amount' % contract
-        self.api.params = parameters
-        response = self.api.patch()
+        self.sdk.endpoint = 'contract/%s/amount' % contract
+        self.sdk.params = parameters
+        response = self.sdk.patch()
 
         if 'Contract updated' in response:
             return 'Contract %s collection amount has been updated to %s' \
@@ -192,9 +192,9 @@ class Patch:
             )
 
         contract_checks.check_payment_day_in_month(new_day)
-        self.api.endpoint = 'contract/%s/monthly' % contract
-        self.api.params = parameters
-        response = self.api.patch()
+        self.sdk.endpoint = 'contract/%s/monthly' % contract
+        self.sdk.params = parameters
+        response = self.sdk.patch()
 
         if 'Contract updated' in response:
             return 'Contract %s day updated to %s' % (contract, str(new_day))
@@ -231,9 +231,9 @@ class Patch:
                 ' set to true.'
             )
         contract_checks.check_payment_day_in_month(new_day)
-        self.api.endpoint = 'contract/%s/annual' % contract
-        self.api.params = parameters
-        response = self.api.patch()
+        self.sdk.endpoint = 'contract/%s/annual' % contract
+        self.sdk.params = parameters
+        response = self.sdk.patch()
 
         if 'Contract updated' in response:
             return 'Contract %s day updated to %s and month updated to %s' \
@@ -267,8 +267,8 @@ class Patch:
             del parameters['date']
             parameters.update({'date': collection})
 
-        self.api.endpoint = 'contract/%s/payment/%s' % (contract, payment)
-        self.api.params = parameters
-        response = self.api.patch()
+        self.sdk.endpoint = 'contract/%s/payment/%s' % (contract, payment)
+        self.sdk.params = parameters
+        response = self.sdk.patch()
 
         return response

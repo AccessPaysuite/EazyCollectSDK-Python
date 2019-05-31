@@ -4,7 +4,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().patch
+        self.eazy = main.EazySDK().patch
 
     def test_payment_patch_valid_patch(self):
         req = self.eazy.payment(

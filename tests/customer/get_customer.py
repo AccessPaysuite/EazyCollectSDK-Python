@@ -8,7 +8,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().get
+        self.eazy = main.EazySDK().get
 
     def test_searching_more_than_one_parameter_narrows_search(self):
         req = self.eazy.customers(

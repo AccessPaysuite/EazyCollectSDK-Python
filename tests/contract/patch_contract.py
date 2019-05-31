@@ -7,7 +7,7 @@ from random import randint
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().patch
+        self.eazy = main.EazySDK().patch
 
     def test_change_contract_amount(self):
         x = randint(1, 1000)

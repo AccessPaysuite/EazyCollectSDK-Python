@@ -6,7 +6,7 @@ from json import loads
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().get
+        self.eazy = main.EazySDK().get
 
     def test_payments_get_all_payments_for_a_contract(self):
         req = self.eazy.payments(

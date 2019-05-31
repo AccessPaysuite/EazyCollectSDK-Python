@@ -8,7 +8,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().post
+        self.eazy = main.EazySDK().post
         self.r = str(getrandbits(32))
 
     def test_post_customer_using_valid_data_returns_customer_json_object(self):

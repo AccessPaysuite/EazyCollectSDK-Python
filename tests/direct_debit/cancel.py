@@ -5,7 +5,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().post
+        self.eazy = main.EazySDK().post
 
     def test_cancel_direct_debit(self):
         req = self.eazy.cancel_direct_debit(

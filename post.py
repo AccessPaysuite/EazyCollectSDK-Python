@@ -17,7 +17,7 @@ class Post:
         """
         A collection of POST requests made to the ECM3 API
         """
-        self.api = Session()
+        self.sdk = Session()
 
     @common_exceptions_decorator
     def callback_url(self, callback_url):
@@ -33,11 +33,11 @@ class Post:
         :Returns:
         'The new callback url is example.com'
         """
-        self.api.endpoint = 'BACS/callback'
-        self.api.params = {
+        self.sdk.endpoint = 'BACS/callback'
+        self.sdk.params = {
             'url': callback_url
         }
-        response = self.api.post()
+        response = self.sdk.post()
 
         if 'ExceptionMessage' in str(response):
             raise EazyAPIException(
@@ -159,9 +159,9 @@ class Post:
         customer_checks.check_bank_details_format(
             account_number, sort_code, account_holder_name
         )
-        self.api.endpoint = 'customer'
-        self.api.params = parameters
-        response = self.api.post()
+        self.sdk.endpoint = 'customer'
+        self.sdk.params = parameters
+        response = self.sdk.post()
         if 'There is an existing Customer with the same Client and Customer' \
            ' ref in the database already' in str(response):
             raise RecordAlreadyExistsError(
@@ -434,9 +434,9 @@ class Post:
                     if date:
                         pass
 
-        self.api.endpoint = 'customer/%s/contract' % customer
-        self.api.params = parameters
-        response = self.api.post()
+        self.sdk.endpoint = 'customer/%s/contract' % customer
+        self.sdk.params = parameters
+        response = self.sdk.post()
         return response
 
     @common_exceptions_decorator
@@ -461,8 +461,8 @@ class Post:
         :Returns:
         contract json object
         """
-        self.api.endpoint = 'contract/%s/cancel' % contract
-        response = self.api.post()
+        self.sdk.endpoint = 'contract/%s/cancel' % contract
+        response = self.sdk.post()
 
         if 'Contract not found' in response:
             raise ResourceNotFoundError(
@@ -495,8 +495,8 @@ class Post:
         :Returns:
         contract json object
         """
-        self.api.endpoint = 'contract/%s/archive' % contract
-        response = self.api.post()
+        self.sdk.endpoint = 'contract/%s/archive' % contract
+        response = self.sdk.post()
 
         if 'Contract is already archived' in response:
             return(
@@ -523,8 +523,8 @@ class Post:
         :Returns:
         contract json object
         """
-        self.api.endpoint = 'contract/%s/reactivate' % contract
-        response = self.api.post()
+        self.sdk.endpoint = 'contract/%s/reactivate' % contract
+        response = self.sdk.post()
         return response
 
     @common_exceptions_decorator
@@ -606,9 +606,9 @@ class Post:
                 '%s is not an acceptable argument for this call, refer'
                 ' to the man page for all available arguments' % key
             )
-        self.api.params = parameters
-        self.api.endpoint = 'contract/%s/restart' % contract
-        response = self.api.post()
+        self.sdk.params = parameters
+        self.sdk.endpoint = 'contract/%s/restart' % contract
+        response = self.sdk.post()
 
         if 'Contract is not expired.' in response:
             return(
@@ -682,9 +682,9 @@ class Post:
             del parameters['date']
             parameters.update({'date': collection})
 
-        self.api.endpoint = 'contract/%s/payment' % contract
-        self.api.params = parameters
-        response = self.api.post()
+        self.sdk.endpoint = 'contract/%s/payment' % contract
+        self.sdk.params = parameters
+        response = self.sdk.post()
 
         if 'Contract not found' in response:
             raise InvalidParameterError(

@@ -7,7 +7,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().get
+        self.eazy = main.EazySDK().get
 
     def test_searching_customer_with_contracts_returns_contracts(self):
         req = self.eazy.contracts('310a826b-d095-48e7-a55a-19dba82c566f')

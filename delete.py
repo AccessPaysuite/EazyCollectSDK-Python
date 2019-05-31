@@ -8,7 +8,7 @@ class Delete:
         """
         A collection of DELETE requests made to the ECM3 API
         """
-        self.api = Session()
+        self.sdk = Session()
 
     @common_exceptions_decorator
     def callback_url(self,):
@@ -21,8 +21,8 @@ class Delete:
         :Returns:
         'Callback URL deleted.'
         """
-        self.api.endpoint = 'BACS/callback'
-        response = self.api.delete()
+        self.sdk.endpoint = 'BACS/callback'
+        response = self.sdk.delete()
         # NULL will be returned if a callback URL does not exist
         if str(response) == '{"Message":null}':
             return 'An unknown error has occurred.'
@@ -52,9 +52,9 @@ class Delete:
         parameters = {
             'comment': comment
         }
-        self.api.params = parameters
-        self.api.endpoint = 'contract/%s/payment/%s' % (contract, payment)
-        response = self.api.delete()
+        self.sdk.params = parameters
+        self.sdk.endpoint = 'contract/%s/payment/%s' % (contract, payment)
+        response = self.sdk.delete()
 
         if 'Payment not found' in response:
             raise ResourceNotFoundError(

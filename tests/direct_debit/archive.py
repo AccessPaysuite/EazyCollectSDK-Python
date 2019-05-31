@@ -5,7 +5,7 @@ import unittest
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = main.EazyAPI().post
+        self.eazy = main.EazySDK().post
 
     def test_archive_contract(self):
         req = self.eazy.archive_contract(

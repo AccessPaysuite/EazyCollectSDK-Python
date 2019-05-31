@@ -6,7 +6,7 @@ from .patch import Patch
 from .delete import Delete
 
 
-class EazyAPI:
+class EazySDK:
     """
     Creates a new instance of the EazyAPI
     """
