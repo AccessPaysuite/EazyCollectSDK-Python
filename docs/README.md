@@ -413,3 +413,124 @@ patch.customer('311228a5-98f5-4bd8-b1b6-023d09ca8b32', account_number='00000000'
 *Returns*
 
 'cusotmer {cusotmer} updated successfully'
+
+#### contract_amount
+
+Modify the collection amount of a contract. **Note** Any amendments to the contract amount will not take action on the next payment if the next payment is within the standard amount of days to collect a payment.
+
+
+*Required parameters*
+- `contract` - The GUID of the contract to be modified
+- `collection_amount` - The new collection amount of the contract
+- `comment` - A comment as to why the contract collection amount was changed
+
+*Example*
+
+patch.contract_amount('311228a5-98f5-4bd8-b1b6-023d09ca8b32', '10.0', 'A customer')
+
+*Returns*
+
+'contract {contract} collection amount has been updated to {collection_amount}'
+
+#### contract_date_monthly
+
+Modify the collection day on a monthly contract. **Note** Any amendments to the contract amount will not take action on the next payment if the next payment is within the standard amount of days to collect a payment.
+
+
+*Required parameters*
+
+- `contract` - The GUID of the contract to be modified
+- `new_day` - The new collection day of the contract
+- `comment` - A comment as to why the contract collection amount was changed
+- `amend_next_payment` - Whether or not the contract collection amount will change
+
+*Optional parameters*
+
+- `next_pamynet_amount` - If `amend_next_payment` is `True`, the collection amount of the following monthly collection
+
+*Example*
+
+patch.contract_date_monthly('311228a5-98f5-4bd8-b1b6-023d09ca8b32', '15', 'A customer', False)
+
+*Returns*
+
+'contract {contract} day has been updated to {new_day}'
+
+
+#### contract_date_annually
+
+Modify the collection day on an annual contract. **Note** Any amendments to the contract amount will not take action on the next payment if the next payment is within the standard amount of days to collect a payment.
+
+
+*Required parameters*
+- `contract` - The GUID of the contract to be modified
+- `new_day` - The new collection day of the contract
+- `new_month` - The new collection month of the contract
+- `comment` - A comment as to why the contract collection amount was changed
+- `amend_next_payment` - Whether or not the contract collection amount will change
+
+*Optional parameters*
+- `next_pamynet_amount` - If `amend_next_payment` is `True`, the collection amount of the following monthly collection
+
+*Example*
+
+patch.contract_date_annually('311228a5-98f5-4bd8-b1b6-023d09ca8b32', '15', '6', 'A customer', False)
+
+*Returns*
+
+'contract {contract} day has been updated to {new_day} and month has been updated to (new_month}'
+
+#### payment
+
+Modify a payment belonging to a contract. **Note** Payments can not be amended after they have been submitted to BACS.
+
+
+*Required parameters*
+- `contract` - The GUID of the contract to be modified
+- `payment` - The GUID of the payment to be modified
+- `collection_amount` - The modified collection amount of the specified payment
+- `collection_date` - The modified collection date of the specified payment
+- `comment`- A comment as to why the payment was changed
+
+*Example*
+
+patch.payment('311228a5-98f5-4bd8-b1b6-023d09ca8b32', '13bdf192-86f1-4979-ae00-250a4722e20b', '10.50', '2019-06-15', 'A payment')
+
+*Returns*
+
+payment JSON response
+
+
+### delete
+
+Sends a `DELETE` request to EazyCustomerManager. Optionally, parameters may be passed. Returns a JSON object or a string.
+
+#### callback_url
+
+Remove the current `callback_url` from EazyCustomerManager
+
+*Example*
+
+delete.callback_url()
+
+*Returns*
+
+'callback URL deleted'
+
+#### payment
+
+Delete a payment from EazyCustomerManager providing it hasn't already been submitted to BACS for processing.
+
+
+*Required parameters*
+- `contract` - The GUID of the contract the payment belongs to
+- `payment` - The GUID of the payment to be deleted
+- `comment` - A comment as to why the payment is being deleted
+
+*Example*
+
+delete.payment('311228a5-98f5-4bd8-b1b6-023d09ca8b32', '13bdf192-86f1-4979-ae00-250a4722e20b', 'A payment')
+
+*Returns*
+
+'payment {payment} deleted'
