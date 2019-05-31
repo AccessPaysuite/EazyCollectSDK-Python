@@ -1,14 +1,14 @@
-from eazyapi import base
+from ... import main
 from json import loads as json
-from exceptions import InvalidParameterError
-from exceptions import RecordAlreadyExistsError
+from ...exceptions import InvalidParameterError
+from ...exceptions import RecordAlreadyExistsError
 from random import getrandbits
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().post
+        self.eazy = main.EazyAPI().post
         self.r = str(getrandbits(32))
 
     def test_post_customer_using_valid_data_returns_customer_json_object(self):

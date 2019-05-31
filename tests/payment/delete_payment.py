@@ -1,11 +1,11 @@
-from eazyapi import base
-from exceptions import ResourceNotFoundError
+from ... import main
+from ...exceptions import ResourceNotFoundError
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().delete
+        self.eazy = main.EazyAPI().delete
 
     def test_delete_payment(self):
         req = self.eazy.payment(

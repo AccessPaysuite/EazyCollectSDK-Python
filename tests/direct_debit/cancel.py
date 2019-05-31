@@ -1,11 +1,11 @@
-from eazyapi import base
-from exceptions import ResourceNotFoundError
+from ... import main
+from ...exceptions import ResourceNotFoundError
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().post
+        self.eazy = main.EazyAPI().post
 
     def test_cancel_direct_debit(self):
         req = self.eazy.cancel_direct_debit(

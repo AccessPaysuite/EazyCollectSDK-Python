@@ -1,12 +1,12 @@
-from eazyapi import base
-from exceptions import ResourceNotFoundError
+from ... import main
+from ...exceptions import ResourceNotFoundError
 import unittest
 from json import loads
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().get
+        self.eazy = main.EazyAPI().get
 
     def test_payments_get_all_payments_for_a_contract(self):
         req = self.eazy.payments(

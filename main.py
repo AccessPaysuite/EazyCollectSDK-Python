@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
-from get import Get
-from post import Post
-from patch import Patch
-from delete import Delete
+from .get import Get
+from .post import Post
+from .patch import Patch
+from .delete import Delete
 
 
 class EazyAPI:

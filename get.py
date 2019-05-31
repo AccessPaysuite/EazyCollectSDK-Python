@@ -1,8 +1,8 @@
-from session import Session
-from settings import warnings as w_settings
+from .session import Session
+from .settings import warnings as w_settings
 from warnings import warn
-from exceptions import common_exceptions_decorator
-from exceptions import InvalidParameterError
+from .exceptions import common_exceptions_decorator
+from .exceptions import InvalidParameterError
 
 
 class Get:

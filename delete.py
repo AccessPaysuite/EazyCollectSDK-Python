@@ -1,6 +1,6 @@
-from session import Session
-from exceptions import common_exceptions_decorator
-from exceptions import ResourceNotFoundError
+from .session import Session
+from .exceptions import common_exceptions_decorator
+from .exceptions import ResourceNotFoundError
 
 
 class Delete:

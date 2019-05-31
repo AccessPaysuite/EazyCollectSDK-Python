@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import datetime
-from settings import other
+from ..settings import other
 from datetime import timedelta
 from requests import get
 

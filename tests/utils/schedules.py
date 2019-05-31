@@ -1,9 +1,9 @@
-from eazyapi import base
+from ... import main
 import unittest
-from settings import other
+from ...settings import other
 from pathlib import Path
 from datetime import datetime
-from settings import current_environment
+from ...settings import current_environment
 from os import remove
 
 base_path = Path(__file__).parent
@@ -13,7 +13,7 @@ ecm3_schedules = (base_path / '../../includes/ecm3.csv').resolve()
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().get
+        self.eazy = main.EazyAPI().get
 
     def test_get_schedules_sandbox_write_to_sandbox_csv(self):
         current_environment['env'] = 'sandbox'

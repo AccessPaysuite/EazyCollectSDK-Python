@@ -1,11 +1,11 @@
-from eazyapi import base
-from exceptions import ResourceNotFoundError
+from ... import main
+from ...exceptions import ResourceNotFoundError
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().post
+        self.eazy = main.EazyAPI().post
 
     def test_archive_contract(self):
         req = self.eazy.archive_contract(

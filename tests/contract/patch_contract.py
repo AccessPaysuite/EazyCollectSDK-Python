@@ -1,13 +1,13 @@
-from eazyapi import base
-from exceptions import ResourceNotFoundError
-from exceptions import InvalidParameterError
+from ... import main
+from ...exceptions import ResourceNotFoundError
+from ...exceptions import InvalidParameterError
 import unittest
 from random import randint
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().patch
+        self.eazy = main.EazyAPI().patch
 
     def test_change_contract_amount(self):
         x = randint(1, 1000)

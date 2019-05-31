@@ -1,12 +1,12 @@
-from eazyapi import base
-from settings import payments as p_settings
-from exceptions import InvalidParameterError
+from ... import main
+from ...settings import payments as p_settings
+from ...exceptions import InvalidParameterError
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().post
+        self.eazy = main.EazyAPI().post
 
     def test_post_payment_all_valid_details(self):
         req = self.eazy.payment(

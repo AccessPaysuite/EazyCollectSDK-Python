@@ -1,9 +1,9 @@
 from datetime import datetime
-from utils.contract_checks import check_working_days_in_future
-from settings import direct_debit_processing_days
-from settings import payments as s_payments
+from .contract_checks import check_working_days_in_future
+from ..settings import direct_debit_processing_days
+from ..settings import payments as s_payments
 from warnings import warn
-from exceptions import InvalidParameterError
+from ..exceptions import InvalidParameterError
 
 
 def check_collection_date(collection_date):

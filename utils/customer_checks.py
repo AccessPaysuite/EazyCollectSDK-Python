@@ -1,4 +1,4 @@
-from exceptions import InvalidParameterError
+from ..exceptions import InvalidParameterError
 from re import search as s
 
 

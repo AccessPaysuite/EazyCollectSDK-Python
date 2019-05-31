@@ -1,11 +1,11 @@
-from session import Session
-from exceptions import common_exceptions_decorator
-from exceptions import InvalidParameterError
-from exceptions import ResourceNotFoundError
-from exceptions import ParameterNotAllowedError
-from utils import customer_checks
-from utils import contract_checks
-from utils import payment_checks
+from .session import Session
+from .exceptions import common_exceptions_decorator
+from .exceptions import InvalidParameterError
+from .exceptions import ResourceNotFoundError
+from .exceptions import ParameterNotAllowedError
+from .utils import customer_checks
+from .utils import contract_checks
+from .utils import payment_checks
 
 
 class Patch:

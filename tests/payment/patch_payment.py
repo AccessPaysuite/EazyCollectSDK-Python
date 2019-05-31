@@ -1,10 +1,10 @@
-from eazyapi import base
+from ... import main
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().patch
+        self.eazy = main.EazyAPI().patch
 
     def test_payment_patch_valid_patch(self):
         req = self.eazy.payment(

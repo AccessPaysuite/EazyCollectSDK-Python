@@ -1,15 +1,15 @@
-from eazyapi import base
-from exceptions import ParameterNotAllowedError
-from exceptions import InvalidParameterError
-from exceptions import InvalidStartDateError
-from exceptions import ResourceNotFoundError
-from settings import contracts as s_contracts
+from ... import main
+from ...exceptions import ParameterNotAllowedError
+from ...exceptions import InvalidParameterError
+from ...exceptions import InvalidStartDateError
+from ...exceptions import ResourceNotFoundError
+from ...settings import contracts as s_contracts
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().post
+        self.eazy = main.EazyAPI().post
 
     def test_ad_hoc_post_contract(self):
         req = self.eazy.contract(

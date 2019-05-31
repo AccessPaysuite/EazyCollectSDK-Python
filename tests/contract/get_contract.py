@@ -1,13 +1,13 @@
-from eazyapi import base
+from ... import main
 from json import loads as json
-from exceptions import APINotEnabledError
-from exceptions import ResourceNotFoundError
+from ...exceptions import APINotEnabledError
+from ...exceptions import ResourceNotFoundError
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().get
+        self.eazy = main.EazyAPI().get
 
     def test_searching_customer_with_contracts_returns_contracts(self):
         req = self.eazy.contracts('310a826b-d095-48e7-a55a-19dba82c566f')

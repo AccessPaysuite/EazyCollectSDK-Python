@@ -1,9 +1,9 @@
 from pathlib import Path
 from datetime import datetime
-from settings import other
-from settings import current_environment
+from ..settings import other
+from ..settings import current_environment
 import json
-from get import Get
+from ..get import Get
 
 
 base_path = Path(__file__).parent

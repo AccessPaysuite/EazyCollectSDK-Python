@@ -1,10 +1,10 @@
 current_environment = {
-    'env': ''               # sandbox || ecm3
+    'env': 'sandbox'    # sandbox || ecm3
 }
 
 sandbox_client_details = {
-    'client_code': '',
-    'api_key': '',
+    'client_code': 'SDKTST',
+    'api_key': 'hkZujzFR2907XAtYe6qkKRsBo',
 }
 
 ecm3_client_details = {
@@ -12,24 +12,26 @@ ecm3_client_details = {
     'api_key': '',
 }
 
+
+
 # Changing these values without prior discussion with EazyCollect may
 # lead to unintended behaviour. If in doubt, contact EazyCollect.
-direct_debit_processing_days ={
+direct_debit_processing_days = {
     'initial': 10,
     'ongoing': 5,
 }
 
 contracts = {
-    'auto_start_date': True,
-    'auto_fix_ad_hoc_termination_type': True,
-    'auto_fix_ad_hoc_at_the_end': True,
-    'auto_fix_payment_day_in_month': True,
-    'auto_fix_payment_month_in_year': True,
+    'auto_start_date': False,
+    'auto_fix_ad_hoc_termination_type': False,
+    'auto_fix_ad_hoc_at_the_end': False,
+    'auto_fix_payment_day_in_month': False,
+    'auto_fix_payment_month_in_year': False,
 }
 
 payments = {
-    'auto_fix_payment_date': True,
-    'is_credit_allowed': True,
+    'auto_fix_payment_date': False,
+    'is_credit_allowed': False,
 }
 
 warnings = {

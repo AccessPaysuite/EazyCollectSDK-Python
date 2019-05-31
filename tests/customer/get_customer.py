@@ -1,14 +1,14 @@
-from eazyapi import base
+from ... import main
 from json import loads as json
 from json import JSONDecodeError
 from datetime import datetime
-from settings import warnings
+from ...settings import warnings
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().get
+        self.eazy = main.EazyAPI().get
 
     def test_searching_more_than_one_parameter_narrows_search(self):
         req = self.eazy.customers(

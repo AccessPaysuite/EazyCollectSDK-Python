@@ -1,10 +1,10 @@
 import requests
 from requests import session
-from settings import current_environment
-from settings import ecm3_client_details
-from settings import sandbox_client_details
-from exceptions import InvalidEnvironmentError
-from exceptions import UnsupportedHTTPMethodError
+from .settings import current_environment
+from .settings import ecm3_client_details
+from .settings import sandbox_client_details
+from .exceptions import InvalidEnvironmentError
+from .exceptions import UnsupportedHTTPMethodError
 from json import JSONDecodeError
 
 

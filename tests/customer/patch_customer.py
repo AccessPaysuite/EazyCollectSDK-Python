@@ -1,13 +1,12 @@
-from eazyapi import base
-from exceptions import InvalidParameterError
-from exceptions import ResourceNotFoundError
-from exceptions import APINotEnabledError
+from ... import main
+from ...exceptions import InvalidParameterError
+from ...exceptions import APINotEnabledError
 import unittest
 
 
 class Test(unittest.TestCase):
     def setUp(self):
-        self.eazy = base.EazyAPI().patch
+        self.eazy = main.EazyAPI().patch
 
     def test_updating_all_customer_details_returns_expected_response(self):
         r = self.eazy.customer(

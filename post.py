@@ -1,15 +1,15 @@
-from session import Session
-from settings import contracts as s_contracts
+from .session import Session
+from .settings import contracts as s_contracts
 from warnings import warn
-from utils import customer_checks
-from utils import contract_checks
-from utils import payment_checks
-from exceptions import EazyAPIException
-from exceptions import common_exceptions_decorator
-from exceptions import ParameterNotAllowedError
-from exceptions import InvalidParameterError
-from exceptions import ResourceNotFoundError
-from exceptions import RecordAlreadyExistsError
+from .utils import customer_checks
+from .utils import contract_checks
+from .utils import payment_checks
+from .exceptions import EazyAPIException
+from .exceptions import common_exceptions_decorator
+from .exceptions import ParameterNotAllowedError
+from .exceptions import InvalidParameterError
+from .exceptions import ResourceNotFoundError
+from .exceptions import RecordAlreadyExistsError
 
 
 class Post:
