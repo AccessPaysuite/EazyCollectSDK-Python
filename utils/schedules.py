@@ -38,7 +38,7 @@ def read_available_schedules_file():
             # Instantiate the JSON object to be written to
             schedules_json['schedule'] = []
             # Get the schedules from ECM3
-            schedules = Get.schedules()
+            schedules = Get().schedules()
             services_list = json.loads(schedules)
             # Read the schedules
             schedule_list = services_list['Services']
@@ -73,7 +73,7 @@ def read_available_schedules_file():
             # Instantiate the JSON object to be written to
             schedules_json['schedule'] = []
             # Get the schedules from ECM3
-            schedules = Get.schedules()
+            schedules = Get().schedules()
             services_list = json.loads(schedules)
             # Read the schedules
             schedule_list = services_list['Services']

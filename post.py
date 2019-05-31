@@ -49,7 +49,7 @@ class Post:
                 'For an unexpected reason, the new callback URL was not'
                 'created.'
             )
-        return 'The new callback url is %s' % callback_url
+        return 'The new callback URL is %s' % callback_url
 
     @common_exceptions_decorator
     def customer(self, email, title, customer_reference, first_name, surname,
