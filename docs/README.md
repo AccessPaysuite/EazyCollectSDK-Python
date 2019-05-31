@@ -1,3 +1,40 @@
+# Table of contents
+
+
+- [Configuration](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#configuration)
+  -  [Available settings](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#available-settings)
+      - [current_environment](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#current_environment)
+      - [sandbox_client_details](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#sandbox_client_details)
+      - [ecm3_client_details](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#ecm3_client_details)
+      - [direct_debit_processing_days](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#direct_debit_processing_days)
+      - [contracts](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contracts)
+      - [payments](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payments)
+      - [warnings](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#warnings)
+      - [other](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#other)
+- [Using EazySDK](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#using-eazysdk)
+  - [get](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#get)
+      - [callback_url](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#callback_url)
+      - [customers](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#customers)
+      - [contracts](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contracts-1)
+      - [payments](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payments-1)
+      - [payments_single](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payments_single)
+      - [schedules](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#schedules)
+  - [post](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#post)
+      - [callback_url](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#callback_url-1)
+      - [customer](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#customer)
+      - [contract](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contract)
+      - [payment](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payment)
+  - [patch](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#patch)
+    - [customer](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#customer-1)
+    - [contract_amount](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contract_amount)
+    - [contract_date_monthly](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contract_date_monthly)
+    - [contract_date_annually](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contract_date_annually)
+    - [payment](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payment-1)
+  - [delete](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#delete)
+    - [callback_url](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#callback_url-2)
+    - [payment](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payment-2)
+
+
 ## Configuration
 
 Configuring EazySDK is simple, and can be done in two ways. The settings file for EazySDK is located at `.settings`, or to configure settings inline, it's as easy as `eazysdk.settings.{setting}['{argument}']`.
