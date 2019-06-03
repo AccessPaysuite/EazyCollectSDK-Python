@@ -11,7 +11,7 @@
       - [payments](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payments)
       - [warnings](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#warnings)
       - [other](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#other)
-- [Using EazySDK](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#using-eazysdk)
+- [Functions](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#using-eazysdk)
   - [get](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#get)
       - [callback_url](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#callback_url)
       - [customers](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#customers)
@@ -26,13 +26,26 @@
       - [payment](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payment)
   - [patch](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#patch)
     - [customer](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#customer-1)
-    - [contract_amount](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contract_amount)
+          - [contract_amount](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contract_amount)
     - [contract_date_monthly](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contract_date_monthly)
     - [contract_date_annually](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#contract_date_annually)
     - [payment](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payment-1)
   - [delete](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#delete)
     - [callback_url](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#callback_url-2)
     - [payment](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#payment-2)
+- [Exceptions](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#Exceptions)
+  - [EazySDKException](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#eazysdkexception)
+    - [UnsupportedHTTPMethodError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#unsupportedhttpmethoderror)
+    - [SDKNotEnabledError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#sdknotenablederror)
+    - [ResourceNotFoundError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#resourcenotfounderror)
+    - [InvalidParameterError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#invalidparametererror)
+    - [EmptyRequiredParameterError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#emptyrequiredparametererror)
+    - [ParameterNotAllowedError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#parameternotallowederror)
+    - [InvalidEnvironmentError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#invalidenvironmenterror)
+    - [InvalidStartDateError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#invalidstartdateerror)
+    - [InvalidPaymentDateError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#invalidpaymentdateerror)
+    - [RecordAlreadyExistsError](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#recordalreadyexistserror)
+    - [InvalidSettingsConfiguration](https://github.com/EazyCollectServices/EazyCollectSDK-Python/blob/local/docs/README.md#invalidsettingsconfiguration)
 
 
 ## Configuration
@@ -172,7 +185,7 @@ If this is set to `True`, every time a call is made through EazySDK which intera
 
 
 
-## Using EazySDK
+## Functions
 
 EazySDK has been designed with simplicity in mind. All functions used in the base framework originate from four different HTTP methods, `GET`, `POST`, `PATCH` and `DELETE`. If you'd like to delete a payment, it's as simple as `delete.payment({params})`. A list of all functions can be found below, but all also have a useful docstring which can be accessed with `help({function})` from within Python.
 
@@ -571,3 +584,42 @@ delete.payment('311228a5-98f5-4bd8-b1b6-023d09ca8b32', '13bdf192-86f1-4979-ae00-
 *Returns*
 
 'payment {payment} deleted'
+
+## Exceptions
+EazySDK employs custom exceptions in an effort to give concise, descriptive reasoning in any situation.
+
+### EazySDKException
+All exceptions thrown by EazySDK derrive from the EazySDKException base exception
+
+#### UnsupportedHTTPMethodError
+`UnsupportedHTTPMethodError` is a generic error. Several causes of `UnsupportedHTTPMethodError` include using an unsupported HTTP method, such as `DELETE` on a contract, a mandatory field has been missed (And `EmptyRequiredParameterError` is not raised) or the base URL is incorrect.
+
+#### SDKNotEnabledError
+`SDKNotEnabledError` is a generic error. Several causes of `SDKNotEnabledError` include the API key being incorrect, the API not being enabled, or a record not existing (Where `ResourceNotFoundError` is not raised).
+
+#### ResourceNotFoundError
+`ResourceNotFoundError` is raised when the requested resource could not be found. This doesn't necesarily mean the resource does not exist. It could also mean the request is malformed, and EazyCustomerManager has not received the expected input.
+
+#### InvalidParameterError
+`InvalidParameterError` is raised when one or more the parameters passed into a call are malformed. For example, `Until further note` is a malformed `termination_type`, which should be `Until further notice`.
+
+#### EmptyRequiredParameterError
+`EmptyRequiredParameterError` is thrown when a parameter which is required for the call has not been passed.
+
+#### ParameterNotAllowedError
+`ParameterNotAllowedError` is thrown when a parameter not allowed for the call has been passed.
+
+#### InvalidEnvironmentError
+`InvalidEnvironmentError` is thrown when the environment set in `settings.current_environment` is not set to `sandbox` or `ecm3`.
+
+#### InvalidStartDateError
+`InvalidStartDateError` is thrown when the start date is not valid. This could mean the start date is too soon, or it is malformed.
+
+#### InvalidPaymentDateError
+`InvalidPaymentDateError` is thrown when the payment date is not valid. This could mean the payment date is too soon, or it is malformed.
+
+#### RecordAlreadyExistsError
+`RecordAlreadyExistsError` is thrown when a record already exists in the case of creating or patching a record.
+
+#### InvalidSettingsConfiguration
+`InvalidSettingsConfiguration` is thrown when a setting is not valid.
