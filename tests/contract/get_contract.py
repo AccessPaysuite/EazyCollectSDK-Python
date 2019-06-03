@@ -1,6 +1,6 @@
 from ... import main
 from json import loads as json
-from ...exceptions import APINotEnabledError
+from ...exceptions import SDKNotEnabledError
 from ...exceptions import ResourceNotFoundError
 import unittest
 
@@ -22,7 +22,7 @@ class Test(unittest.TestCase):
         self.assertIn('does not own any contracts', req)
 
     def test_searching_invalid_customer_returns_error(self):
-        with self.assertRaises(APINotEnabledError) as e:
+        with self.assertRaises(SDKNotEnabledError) as e:
             self.eazy.contracts('7c1a60c5-af12-4477-a10b-a61770e312b6')
         self.assertIn('This is a generic error.', str(e.exception))
 

@@ -1,6 +1,6 @@
 from ... import main
 from ...exceptions import InvalidParameterError
-from ...exceptions import APINotEnabledError
+from ...exceptions import SDKNotEnabledError
 import unittest
 
 
@@ -222,11 +222,11 @@ class Test(unittest.TestCase):
         )
 
     def test_empty_customer_throws_error(self):
-        with self.assertRaises(APINotEnabledError):
+        with self.assertRaises(SDKNotEnabledError):
             self.eazy.customer('', email='test@email.com')
 
     def test_invalid_customer_guid_throws_error(self):
-        with self.assertRaises(APINotEnabledError):
+        with self.assertRaises(SDKNotEnabledError):
             self.eazy.customer(
                 '310a826b-f195-48e7-a55a-19dba82c566f', email='test@email.com'
             )

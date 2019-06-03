@@ -4,7 +4,7 @@ from warnings import warn
 from .utils import customer_checks
 from .utils import contract_checks
 from .utils import payment_checks
-from .exceptions import EazyAPIException
+from .exceptions import EazySDKException
 from .exceptions import common_exceptions_decorator
 from .exceptions import ParameterNotAllowedError
 from .exceptions import InvalidParameterError
@@ -40,12 +40,12 @@ class Post:
         response = self.sdk.post()
 
         if 'ExceptionMessage' in str(response):
-            raise EazyAPIException(
+            raise EazySDKException(
                 'The API serializer is not enabled for this account. Please'
                 'contact us on help@eazycollect.co.uk for assistance'
             )
         elif 'Updated' not in str(response):
-            raise EazyAPIException(
+            raise EazySDKException(
                 'For an unexpected reason, the new callback URL was not'
                 'created.'
             )

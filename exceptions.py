@@ -7,67 +7,67 @@ This module contains the set of EazyAPI's exceptions
 from functools import wraps
 
 
-class EazyAPIException(IOError):
+class EazySDKException(IOError):
     """ There was an unknown error that occurred while handling your
     request.
     """
     def __init__(self, message, *args):
         self.message = message
-        super(EazyAPIException, self).__init__(message, *args)
+        super(EazySDKException, self).__init__(message, *args)
 
 
-class UnsupportedHTTPMethodError(EazyAPIException):
+class UnsupportedHTTPMethodError(EazySDKException):
     """ The requested HTTP method is not available to EazyAPI.
     """
 
 
-class APINotEnabledError(EazyAPIException):
+class SDKNotEnabledError(EazySDKException):
     """ The API key is not enabled.
     """
 
 
-class ResourceNotFoundError(EazyAPIException):
+class ResourceNotFoundError(EazySDKException):
     """ The requested resource could not be found using the parameters.
     """
 
 
-class InvalidParameterError(EazyAPIException):
+class InvalidParameterError(EazySDKException):
     """ One or more of the parameters provided are not valid.
     """
 
 
-class EmptyRequiredParameterError(EazyAPIException):
+class EmptyRequiredParameterError(EazySDKException):
     """ One or more of the required parameters have not been passed into
     the call.
     """
 
 
-class ParameterNotAllowedError(EazyAPIException):
+class ParameterNotAllowedError(EazySDKException):
     """ One or more parameters are mutually exclusive
     """
 
 
-class InvalidEnvironmentError(EazyAPIException):
+class InvalidEnvironmentError(EazySDKException):
     """ The environment provided was somehow invalid
     """
 
 
-class InvalidStartDateError(EazyAPIException):
+class InvalidStartDateError(EazySDKException):
     """ The selected start date of the contract is somehow invalid.
     """
 
 
-class InvalidPaymentDateError(EazyAPIException):
+class InvalidPaymentDateError(EazySDKException):
     """ The selected payment date is somehow invalid.
     """
 
 
-class RecordAlreadyExistsError(EazyAPIException):
+class RecordAlreadyExistsError(EazySDKException):
     """ The record trying to be created already exists.
     """
 
 
-class InvalidSettingsConfiguration(EazyAPIException):
+class InvalidSettingsConfiguration(EazySDKException):
     """ A settings is not correct
     """
 
@@ -86,7 +86,7 @@ def common_exceptions_decorator(funct):
                 'field has been missed'
             )
         elif 'API not enabled' in func or 'does not support' in func:
-            raise APINotEnabledError(
+            raise SDKNotEnabledError(
                 'This is a generic error. This can be caused by several '
                 'events, including\n'
                 '- The API key is not correct.\n'
