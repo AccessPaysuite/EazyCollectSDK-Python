@@ -1,8 +1,8 @@
 """
-eazyapi.excepions
+eazysdk.excepions
 ~~~~~~~~~~~~~~~~~
 
-This module contains the set of EazyAPI's exceptions
+This module contains the set of EazySDK's exceptions
 """
 from functools import wraps
 
@@ -17,7 +17,7 @@ class EazySDKException(IOError):
 
 
 class UnsupportedHTTPMethodError(EazySDKException):
-    """ The requested HTTP method is not available to EazyAPI.
+    """ The requested HTTP method is not available to EazySDK.
     """
 
 

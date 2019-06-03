@@ -8,7 +8,7 @@ from .delete import Delete
 
 class EazySDK:
     """
-    Creates a new instance of the EazyAPI
+    Creates a new instance of the EazySDK
     """
     def __init__(self):
         self.get = Get()

@@ -11,7 +11,7 @@ from json import JSONDecodeError
 class Session:
     def __init__(self):
         """
-        Creates a new instance of the EazyAPI session
+        Creates a new instance of the EazySDK session
         """
         self.client_settings = None
         self.environment = current_environment['env'].lower()
@@ -50,7 +50,7 @@ class Session:
         """
         Create a request to ECM3
         :Args:
-        - method - The method of the HTTP call. EazyAPI exposes the
+        - method - The method of the HTTP call. EazySDK exposes the
                    DELETE, GET, PATCH and POST HTTP methods
         - endpoint - The desired environment for making API calls.
                         By default, the environment is set to 'sandbox'.
