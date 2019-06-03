@@ -365,7 +365,7 @@ customer JSON object
 
 #### contract
 
-Create a contract within ECM3. It is important to note that due to the complexity of contracts, there are several rules dictating the general flow of contract creation. To aid this, we've created `settings.contracts`, which helps by automatically fixing some of the common issues found when creating contracts.
+Create a contract within EazyCustomerManager. It is important to note that due to the complexity of contracts, there are several rules dictating the general flow of contract creation. To aid this, we've created `settings.contracts`, which helps by automatically fixing some of the common issues found when creating contracts.
 
 *Required parameters*
 

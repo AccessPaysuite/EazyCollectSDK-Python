@@ -2,12 +2,10 @@ from pathlib import Path
 from ..exceptions import InvalidParameterError
 from .schedules import read_available_schedules_file
 from ..exceptions import InvalidStartDateError
-from ..settings import direct_debit_processing_days
-from ..settings import contracts as s_contracts
+from ..settings import Settings as s
 from datetime import datetime
 from .working_days import check_working_days_in_future
 from warnings import warn
-from ..settings import current_environment
 import json
 
 base_path = Path(__file__).parent
@@ -148,11 +146,11 @@ def check_number_of_debits(number_of_debits):
 def check_start_date(start_date):
     date_format = '%Y-%m-%d'
     start = datetime.strptime(start_date, date_format).date()
-    initial_days_in_future = direct_debit_processing_days['initial']
+    initial_days_in_future = s.direct_debit_processing_days['initial']
     first_date = check_working_days_in_future(initial_days_in_future)
 
     if start < first_date:
-        if s_contracts['auto_start_date']:
+        if s.contracts['auto_start_date']:
             warn(
                 '%s is not a valid start date. The earliest start date '
                 'available is %s. This date has automatically been'
@@ -186,7 +184,7 @@ def check_termination_date_is_in_future(termination_date, start_date):
 
 def ad_hoc_checker(schedule):
     schedule_type = None
-    if current_environment['env'] == 'sandbox':
+    if s.current_environment['env'] == 'sandbox':
         schedules_json = sandbox_schedules
     else:
         schedules_json = ecm3_schedules
@@ -208,7 +206,7 @@ def ad_hoc_checker(schedule):
 
 def payment_time_frame_checker(schedule):
     payment_type = None
-    if current_environment['env'] == 'sandbox':
+    if s.current_environment['env'] == 'sandbox':
         schedules_json = sandbox_schedules
     else:
         schedules_json = ecm3_schedules

@@ -1,7 +1,6 @@
 from datetime import datetime
 from .contract_checks import check_working_days_in_future
-from ..settings import direct_debit_processing_days
-from ..settings import payments as s_payments
+from ..settings import Settings as s
 from warnings import warn
 from ..exceptions import InvalidParameterError
 
@@ -9,11 +8,11 @@ from ..exceptions import InvalidParameterError
 def check_collection_date(collection_date):
     date_format = '%Y-%m-%d'
     desired_date = datetime.strptime(collection_date, date_format).date()
-    ongoing_days = direct_debit_processing_days['ongoing']
+    ongoing_days = s.direct_debit_processing_days['ongoing']
     first_date = check_working_days_in_future(ongoing_days)
 
     if desired_date < first_date:
-        if s_payments['auto_fix_payment_date']:
+        if s.payments['auto_fix_payment_date']:
             warn(
                 '%s is not a valid start date. The earliest start date '
                 'available is %s. This date has automatically been'
@@ -31,7 +30,7 @@ def check_collection_date(collection_date):
 
 
 def is_credit_allowed_check():
-    if s_payments['is_credit_allowed']:
+    if s.payments['is_credit_allowed']:
         pass
     else:
         warn(

@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import datetime
-from ..settings import other
+from ..settings import Settings as s
 from datetime import timedelta
 from requests import get
 
@@ -69,7 +69,7 @@ def read_bank_holiday_file_and_check_if_update_needed():
             date_difference = today_date - last_update_date
             day_difference = date_difference.days
 
-            if day_difference >= other['bank_holidays_update_days']:
+            if day_difference >= s.other['bank_holidays_update_days']:
                 print(
                     'The bank holidays file has not been updated in over %s'
                     ' days. Updating......' % day_difference

@@ -1,5 +1,5 @@
 from .session import Session
-from .settings import warnings as w_settings
+from .settings import Settings as s
 from warnings import warn
 from .exceptions import common_exceptions_decorator
 from .exceptions import InvalidParameterError
@@ -110,7 +110,7 @@ class Get:
 
         parameters = {}
         key = None
-        if w_settings['customer_search'] and all(
+        if s.warnings['customer_search'] and all(
                 value == '' for value in method_arguments.values()):
             warn('Retrieving customers without using any search times '
                  'may take some time.')

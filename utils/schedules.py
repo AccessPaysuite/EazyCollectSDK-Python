@@ -1,7 +1,6 @@
 from pathlib import Path
 from datetime import datetime
-from ..settings import other
-from ..settings import current_environment
+from ..settings import Settings as s
 import json
 from ..get import Get
 
@@ -13,7 +12,7 @@ ecm3_schedules_file = (base_path / '../includes/ecm3.csv').resolve()
 
 def read_available_schedules_file():
     # Check the current environment, and select the appropriate file
-    if current_environment['env'] == 'sandbox':
+    if s.current_environment['env'] == 'sandbox':
         file = sandbox_schedules_file
     else:
         file = ecm3_schedules_file
@@ -64,7 +63,7 @@ def read_available_schedules_file():
                 schedules_json['last_update_date'] = ({
                     'last_updated': str(datetime.now().date())
                 })
-            if day_difference >= 365 or other['force_schedule_updates']:
+            if day_difference >= 365 or s.other['force_schedule_updates']:
                 update_schedules_file(schedules_json)
 
             return schedules_json
@@ -104,7 +103,7 @@ def read_available_schedules_file():
 
 
 def update_schedules_file(schedules_json):
-    if current_environment['env'] == 'sandbox':
+    if s.current_environment['env'] == 'sandbox':
         file = sandbox_schedules_file
     else:
         file = ecm3_schedules_file

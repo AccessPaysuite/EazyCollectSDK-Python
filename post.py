@@ -1,5 +1,5 @@
 from .session import Session
-from .settings import contracts as s_contracts
+from .settings import Settings as s
 from warnings import warn
 from .utils import customer_checks
 from .utils import contract_checks
@@ -282,7 +282,7 @@ class Post:
 
         if not ad_hoc:
             if termination_type.lower() != 'until further notice':
-                if s_contracts['auto_fix_ad_hoc_termination_type']:
+                if s.contracts['auto_fix_ad_hoc_termination_type']:
                     warn('Termination type must be Until Further Notice on'
                          ' ad_hoc contracts. This has been automatically '
                          'applied.')
@@ -296,7 +296,7 @@ class Post:
                         ' on ad_hoc contracts'
                     )
             if at_the_end.lower() != 'switch to further notice':
-                if s_contracts['auto_fix_ad_hoc_at_the_end']:
+                if s.contracts['auto_fix_ad_hoc_at_the_end']:
                     warn('At the end must be Switch To Further Notice on'
                          ' ad_hoc contracts. This has been automatically '
                          'applied.')
@@ -345,7 +345,7 @@ class Post:
                     )
             elif freq == 1:
                 if str(payment_day_in_month) != parameters['start'][8:10]:
-                    if s_contracts['auto_fix_payment_day_in_month']:
+                    if s.contracts['auto_fix_payment_day_in_month']:
                         pdim = parameters['start'][8:10]
                         del parameters['paymentDayInMonth']
                         parameters.update({'paymentDayInMonth': pdim})
@@ -366,7 +366,7 @@ class Post:
                     )
             elif freq == 2:
                 if str(payment_month_in_year) not in parameters['start'][5:7]:
-                    if s_contracts['auto_fix_payment_month_in_year']:
+                    if s.contracts['auto_fix_payment_month_in_year']:
                         pmiy = int(parameters['start'][4:6])
                         del parameters['paymentMonthInYear']
                         parameters.update({'paymentMonthInYear': pmiy})
@@ -387,7 +387,7 @@ class Post:
                     )
 
                 if str(payment_day_in_month) != parameters['start'][8:10]:
-                    if s_contracts['auto_fix_payment_day_in_month']:
+                    if s.contracts['auto_fix_payment_day_in_month']:
                         pdim = parameters['start'][8:10]
                         del parameters['paymentDayInMonth']
                         parameters.update({'paymentDayInMonth': pdim})
