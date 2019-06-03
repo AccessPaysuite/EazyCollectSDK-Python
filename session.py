@@ -115,7 +115,7 @@ class Session:
         )
         try:
             if response.text:
-                response_json = response.json()
+                response_json = response.text
             else:
                 response_json = {}
         except JSONDecodeError:
