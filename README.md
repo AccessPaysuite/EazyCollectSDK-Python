@@ -12,14 +12,14 @@ The integration process is simple, and involves importing EazySDK into your virt
     >> pip install eazysdk
      
     import eazysdk
-     
-    eazysdk.settings.current_environment['env'] = 'sandbox'  
-    eazysdk.settings.sandbox_client_details['client_code'] = '{client_code}'  
-    eazysdk.settings.sandbox_client_details['api_key'] = '{api_key}'
-     
-    client = eazysdk.EazySDK()
-    response = client.get.customers()
     
+    client = eazysdk.EazySDK()
+    
+    client.settings.current_environment['env'] = 'sandbox'  
+    client.settings.sandbox_client_details['client_code'] = '{client_code}'  
+    client.settings.sandbox_client_details['api_key'] = '{api_key}'
+  
+    response = client.get.customers()
     print(response)
 
 ## Documentation
