@@ -6,14 +6,15 @@ from .exceptions import ResourceNotFoundError
 class Delete:
     def __init__(self):
         """
-        A collection of DELETE requests made to the ECM3 API
+        A collection of DELETE requests made to the EazyCustomerManager
+        API
         """
         self.sdk = Session()
 
     @common_exceptions_decorator
     def callback_url(self,):
         """
-        Delete the current callback URL from ECM3
+        Delete the current callback URL from EazyCustomerManager
 
         :Example:
         callback_url()
@@ -33,8 +34,8 @@ class Delete:
     @common_exceptions_decorator
     def payment(self, contract, payment, comment):
         """
-        Delete a payment from ECM3, as long as it hasn't already been
-        submitted to BACS.
+        Delete a payment from EazyCustomerManager, as long as it hasn't
+        already been submitted to BACS.
 
         :Args:
         - contract - The unique GUID of the contract.

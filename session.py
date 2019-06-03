@@ -124,24 +124,24 @@ class Session:
 
     def get(self):
         """
-        Perform a GET request to a given endpoint in ECM3
+        Send a GET request to EazyCustomerManager
         """
         return self.request('GET', self.endpoint, self.params)
 
     def post(self):
         """
-        Perform a POST request to a given endpoint in ECM3
+        Send a POST request to EazyCustomerManager
         """
         return self.request('POST', self.endpoint, self.params)
 
     def patch(self):
         """
-        Perform a PATCH request to a given endpoint in ECM3
+        Send a PATCH request to EazyCustomerManager
         """
         return self.request('PATCH', self.endpoint, self.params)
 
     def delete(self):
         """
-        Perform a DELETE request to a given endpoint in ECM3
+        Send a DELETE request to EazyCustomerManager
         """
         return self.request('DELETE', self.endpoint, self.params)

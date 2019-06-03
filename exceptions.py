@@ -103,7 +103,8 @@ def common_exceptions_decorator(funct):
                 ' including\n'
                 '- You are searching against a record that does not exist\n'
                 '- You are missing a mandatory parameter in your API call\n'
-                '- You are trying to send invalid data to ECM3.\n'
+                '- You are trying to send invalid data to'
+                ' EazyCustomerManager.\n'
                 '- The provided client code or API key is incorrect.'
             )
         else:

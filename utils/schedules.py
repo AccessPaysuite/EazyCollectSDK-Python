@@ -36,7 +36,7 @@ def read_available_schedules_file():
 
             # Instantiate the JSON object to be written to
             schedules_json['schedule'] = []
-            # Get the schedules from ECM3
+            # Get the schedules from EazyCustomerManager
             schedules = Get().schedules()
             services_list = json.loads(schedules)
             # Read the schedules
@@ -71,7 +71,7 @@ def read_available_schedules_file():
         except:
             # Instantiate the JSON object to be written to
             schedules_json['schedule'] = []
-            # Get the schedules from ECM3
+            # Get the schedules from EazyCustomerManager
             schedules = Get().schedules()
             services_list = json.loads(schedules)
             # Read the schedules

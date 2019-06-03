@@ -11,7 +11,8 @@ from .utils import payment_checks
 class Patch:
     def __init__(self):
         """
-        A collection of PATCH requests made to the ECM3 API
+        A collection of PATCH requests made to the EazyCustomerManager
+        API
         """
         self.sdk = Session()
 
@@ -22,10 +23,11 @@ class Patch:
                  account_holder_name='', home_phone='', mobile_phone='',
                  work_phone='', line2='', line3='', line4='', initials=''):
         """
-        Modify a customer in ECM3
+        Modify a customer in EazyCustomerManager
 
         :Required args:
-        - customer - The GUID of the customer to be modified within ECM3.
+        - customer - The GUID of the customer to be modified within
+            EazyCustomerManager.
 
         :Optional args:
         - email - The email address of the customer. This must be unique
@@ -57,9 +59,9 @@ class Patch:
         """
         # Get all method arguments
         method_arguments = locals()
-        # We will not be passing self into ECM3
+        # We will not be passing self into EazyCustomerManager
         del method_arguments['self']
-        # A set of pythonic arguments and their ECM3 counterparts
+        # A set of pythonic arguments and EazyCustomerManager counterparts
         conversions = {
             'email': 'email',
             'title': 'title',
@@ -133,9 +135,9 @@ class Patch:
     def contract_amount(self, contract, collection_amount, comment):
         # Get all method arguments
         method_arguments = locals()
-        # We will not be passing self into ECM3
+        # We will not be passing self into EazyCustomerManager
         del method_arguments['self']
-        # A set of pythonic arguments and their ECM3 counterparts
+        # A set of pythonic arguments and EazyCustomerManager counterparts
         parameters = {
             'amount': collection_amount,
             'comment': comment,
@@ -170,9 +172,9 @@ class Patch:
                               amend_next_payment, next_payment_amount=''):
         # Get all method arguments
         method_arguments = locals()
-        # We will not be passing self into ECM3
+        # We will not be passing self into EazyCustomerManager
         del method_arguments['self']
-        # A set of pythonic arguments and their ECM3 counterparts
+        # A set of pythonic arguments and EazyCustomerManager counterparts
         parameters = {
             'monthDay': new_day,
             'comment': comment,
@@ -209,9 +211,9 @@ class Patch:
                                amend_next_payment, next_payment_amount=''):
         # Get all method arguments
         method_arguments = locals()
-        # We will not be passing self into ECM3
+        # We will not be passing self into EazyCustomerManager
         del method_arguments['self']
-        # A set of pythonic arguments and their ECM3 counterparts
+        # A set of pythonic arguments and EazyCustomerManager counterparts
         parameters = {
             'monthDay': new_day,
             'month': new_month,
@@ -249,11 +251,11 @@ class Patch:
                 comment):
         # Get all method arguments
         method_arguments = locals()
-        # We will not be passing self into ECM3
+        # We will not be passing self into EazyCustomerManager
         del method_arguments['self']
         del method_arguments['contract']
         del method_arguments['payment']
-        # A set of pythonic arguments and their ECM3 counterparts
+        # A set of pythonic arguments and EazyCustomerManager counterparts
         payment_checks.check_collection_amount(collection_amount)
         collection = payment_checks.check_collection_date(collection_date)
 

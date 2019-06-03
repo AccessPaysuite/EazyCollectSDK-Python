@@ -125,8 +125,8 @@ def check_payment_month_in_year(payment_month_in_year):
 
 def check_number_of_debits(number_of_debits):
     """ A simple check to ensure it is a number that is being passed
-    into the params body. This would be simple, if not for ECM3 insists
-    on fetching a string, and not an int.
+    into the params body. This would be simple, if not for
+    EazyCustomerManager insists on fetching a string, and not an int.
     """
     try:
         number = int(number_of_debits)
