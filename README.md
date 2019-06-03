@@ -22,3 +22,5 @@ The integration process is simple, and involves importing EazySDK into your virt
     
     print(response)
 
+## Documentation
+All functions in EazySDK posess their own documentation, and can be fetched by calling `help(function)`. The documentation can also be [found on GitHub](https://github.com/EazyCollectServices/EazyCollectSDK-Python/tree/local/docs), or in the /docs directory of the package.
