@@ -314,7 +314,7 @@ Sends a `POST` request to EazyCustomerManager. Optionally, parameters may be pas
 
 Create or update the callback URL used to return data from EazyCustomerManager. **Note:** Although it isn't required, we strongly recommend using a URL secured by the HTTPS protocol. 
 
-`Required parameters`
+*Required parameters*
 
 - *callback_url* - The url of the new location data will be returned to from EazyCustomerManager
 
@@ -434,7 +434,7 @@ Modify a customer within EazyCustomerManager.
 
 
 *Required parameters*
-- `customer` - The GUID of the customer to be modified
+- *customer* - The GUID of the customer to be modified
 
 *Optional parameters*
 
@@ -470,9 +470,9 @@ Modify the collection amount of a contract. **Note** Any amendments to the contr
 
 
 *Required parameters*
-- `contract` - The GUID of the contract to be modified
-- `collection_amount` - The new collection amount of the contract
-- `comment` - A comment as to why the contract collection amount was changed
+- *contract* - The GUID of the contract to be modified
+- *collection_amount* - The new collection amount of the contract
+- *comment* - A comment as to why the contract collection amount was changed
 
 *Example*
 
@@ -489,14 +489,14 @@ Modify the collection day on a monthly contract. **Note** Any amendments to the 
 
 *Required parameters*
 
-- `contract` - The GUID of the contract to be modified
-- `new_day` - The new collection day of the contract
-- `comment` - A comment as to why the contract collection amount was changed
-- `amend_next_payment` - Whether or not the contract collection amount will change
+- *contract* - The GUID of the contract to be modified
+- *new_day* - The new collection day of the contract
+- *comment* - A comment as to why the contract collection amount was changed
+- *amend_next_payment* - Whether or not the contract collection amount will change
 
 *Optional parameters*
 
-- `next_pamynet_amount` - If `amend_next_payment` is `True`, the collection amount of the following monthly collection
+- *next_pamynet_amount* - If `amend_next_payment` is `True`, the collection amount of the following monthly collection
 
 *Example*
 
@@ -513,14 +513,14 @@ Modify the collection day on an annual contract. **Note** Any amendments to the 
 
 
 *Required parameters*
-- `contract` - The GUID of the contract to be modified
-- `new_day` - The new collection day of the contract
-- `new_month` - The new collection month of the contract
-- `comment` - A comment as to why the contract collection amount was changed
-- `amend_next_payment` - Whether or not the contract collection amount will change
+- *contract* - The GUID of the contract to be modified
+- *new_day* - The new collection day of the contract
+- *new_month* - The new collection month of the contract
+- *comment* - A comment as to why the contract collection amount was changed
+- *amend_next_payment* - Whether or not the contract collection amount will change
 
 *Optional parameters*
-- `next_pamynet_amount` - If `amend_next_payment` is `True`, the collection amount of the following monthly collection
+- *next_pamynet_amount* - If `amend_next_payment` is `True`, the collection amount of the following monthly collection
 
 *Example*
 
@@ -536,11 +536,11 @@ Modify a payment belonging to a contract. **Note** Payments can not be amended a
 
 
 *Required parameters*
-- `contract` - The GUID of the contract to be modified
-- `payment` - The GUID of the payment to be modified
-- `collection_amount` - The modified collection amount of the specified payment
-- `collection_date` - The modified collection date of the specified payment
-- `comment`- A comment as to why the payment was changed
+- *contract* - The GUID of the contract to be modified
+- *payment* - The GUID of the payment to be modified
+- *collection_amount* - The modified collection amount of the specified payment
+- *collection_date* - The modified collection date of the specified payment
+- *comment*- A comment as to why the payment was changed
 
 *Example*
 
@@ -573,9 +573,9 @@ Delete a payment from EazyCustomerManager providing it hasn't already been submi
 
 
 *Required parameters*
-- `contract` - The GUID of the contract the payment belongs to
-- `payment` - The GUID of the payment to be deleted
-- `comment` - A comment as to why the payment is being deleted
+- *contract* - The GUID of the contract the payment belongs to
+- *payment* - The GUID of the payment to be deleted
+- *comment* - A comment as to why the payment is being deleted
 
 *Example*
 
