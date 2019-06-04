@@ -3,7 +3,7 @@ from ...exceptions import ParameterNotAllowedError
 from ...exceptions import InvalidParameterError
 from ...exceptions import InvalidStartDateError
 from ...exceptions import ResourceNotFoundError
-from ...settings import contracts as s_contracts
+from ...settings import Settings as s
 import unittest
 
 
@@ -20,7 +20,7 @@ class Test(unittest.TestCase):
         self.assertIn('SDKTST-', req)
 
     def test_ad_hoc_post_contract_auto_fix_start_date(self):
-        s_contracts['auto_start_date'] = True
+        s.contracts['auto_start_date'] = True
         req = self.eazy.contract(
             '310a826b-d095-48e7-a55a-19dba82c566f', 'adhoc_monthly_free',
             '2018-06-15', False, 'Until Further Notice',
@@ -29,7 +29,7 @@ class Test(unittest.TestCase):
         self.assertIn('SDKTST-', req)
 
     def test_ad_hoc_post_contract_auto_fix_termination_type(self):
-        s_contracts['auto_fix_ad_hoc_termination_type'] = True
+        s.contracts['auto_fix_ad_hoc_termination_type'] = True
         req = self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'adhoc_monthly_free',
                 '2019-08-15', False, 'End on exact date',
@@ -38,7 +38,7 @@ class Test(unittest.TestCase):
         self.assertIn('SDKTST-', req)
 
     def test_ad_hoc_auto_fix_at_the_end(self):
-        s_contracts['auto_fix_ad_hoc_at_the_end'] = True
+        s.contracts['auto_fix_ad_hoc_at_the_end'] = True
         req = self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'adhoc_monthly_free',
                 '2019-08-15', False, 'Until further notice',
@@ -72,7 +72,7 @@ class Test(unittest.TestCase):
         self.assertIn('The requested resource could not', str(e.exception))
 
     def test_ad_hoc_invalid_start_date_throws_error(self):
-        s_contracts['auto_start_date'] = False
+        s.contracts['auto_start_date'] = False
         with self.assertRaises(InvalidStartDateError) as e:
             self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'adhoc_monthly_free',
@@ -82,7 +82,7 @@ class Test(unittest.TestCase):
         self.assertIn('is not a valid start date', str(e.exception))
 
     def test_ad_hoc_invalid_termination_type_throws_error(self):
-        s_contracts['auto_start_date'] = False
+        s.contracts['auto_start_date'] = False
         with self.assertRaises(InvalidParameterError) as e:
             self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'adhoc_monthly_free',
@@ -92,7 +92,7 @@ class Test(unittest.TestCase):
         self.assertIn('termination_type must be set to', str(e.exception))
 
     def test_ad_hoc_invalid_at_the_end_throws_error(self):
-        s_contracts['auto_fix_ad_hoc_at_the_end'] = False
+        s.contracts['auto_fix_ad_hoc_at_the_end'] = False
         with self.assertRaises(InvalidParameterError) as e:
             self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'adhoc_monthly_free',
@@ -168,7 +168,7 @@ class Test(unittest.TestCase):
         self.assertIn('SDKTST-', req)
 
     def test_weekly_auto_fix_start_date(self):
-        s_contracts['auto_start_date'] = True
+        s.contracts['auto_start_date'] = True
         req = self.eazy.contract(
             '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
             '2019-06-01', False, 'Until Further Notice',
@@ -228,7 +228,7 @@ class Test(unittest.TestCase):
         self.assertIn('The requested resource could not', str(e.exception))
 
     def test_weekly_invalid_start_date_throws_error(self):
-        s_contracts['auto_start_date'] = False
+        s.contracts['auto_start_date'] = False
         with self.assertRaises(InvalidStartDateError) as e:
             self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'weekly_free',
@@ -327,7 +327,7 @@ class Test(unittest.TestCase):
         self.assertIn('SDKTST-', req)
 
     def test_monthly_auto_fix_start_date(self):
-        s_contracts['auto_start_date'] = True
+        s.contracts['auto_start_date'] = True
         req = self.eazy.contract(
             '310a826b-d095-48e7-a55a-19dba82c566f', 'monthly_free',
             '2019-06-01', False, 'Until Further Notice',
@@ -337,7 +337,7 @@ class Test(unittest.TestCase):
         self.assertIn('SDKTST-', req)
 
     def test_monthly_auto_fix_payment_day_in_month(self):
-        s_contracts['auto_fix_payment_day_in_month'] = True
+        s.contracts['auto_fix_payment_day_in_month'] = True
         req = self.eazy.contract(
             '310a826b-d095-48e7-a55a-19dba82c566f', 'monthly_free',
             '2019-06-22', False, 'Until Further Notice',
@@ -405,7 +405,7 @@ class Test(unittest.TestCase):
         self.assertIn('is not a valid schedule', str(e.exception))
 
     def test_monthly_invalid_start_date_throws_error(self):
-        s_contracts['auto_start_date'] = False
+        s.contracts['auto_start_date'] = False
         with self.assertRaises(InvalidStartDateError) as e:
             self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'monthly_free',
@@ -416,7 +416,7 @@ class Test(unittest.TestCase):
         self.assertIn('is not a valid start date', str(e.exception))
 
     def test_monthly_invalid_payment_date_in_month_throws_error(self):
-        s_contracts['auto_fix_payment_day_in_month'] = False
+        s.contracts['auto_fix_payment_day_in_month'] = False
         with self.assertRaises(InvalidParameterError) as e:
             self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'monthly_free',
@@ -508,7 +508,7 @@ class Test(unittest.TestCase):
         self.assertIn('SDKTST-', req)
 
     def test_annual_auto_fix_start_date(self):
-        s_contracts['auto_start_date'] = True
+        s.contracts['auto_start_date'] = True
         req = self.eazy.contract(
             '310a826b-d095-48e7-a55a-19dba82c566f', 'annual_free',
             '2019-08-15', False, 'Until Further Notice',
@@ -519,7 +519,7 @@ class Test(unittest.TestCase):
         self.assertIn('SDKTST-', req)
 
     def test_annual_auto_fix_payment_day_in_month(self):
-        s_contracts['auto_fix_payment_day_in_month'] = True
+        s.contracts['auto_fix_payment_day_in_month'] = True
         req = self.eazy.contract(
             '310a826b-d095-48e7-a55a-19dba82c566f', 'annual_free',
             '2019-08-15', False, 'Until Further Notice',
@@ -581,7 +581,7 @@ class Test(unittest.TestCase):
         self.assertIn('The requested resource could not', str(e.exception))
 
     def test_annual_invalid_start_date_throws_error(self):
-        s_contracts['auto_start_date'] = False
+        s.contracts['auto_start_date'] = False
         with self.assertRaises(InvalidStartDateError) as e:
             self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'annual_free',
@@ -593,7 +593,7 @@ class Test(unittest.TestCase):
         self.assertIn('is not a valid start date', str(e.exception))
 
     def test_annual_invalid_payment_date_in_month_throws_error(self):
-        s_contracts['auto_fix_payment_day_in_month'] = False
+        s.contracts['auto_fix_payment_day_in_month'] = False
         with self.assertRaises(InvalidParameterError) as e:
             self.eazy.contract(
                 '310a826b-d095-48e7-a55a-19dba82c566f', 'annual_free',

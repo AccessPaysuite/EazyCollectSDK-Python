@@ -184,9 +184,45 @@ class Patch:
             )
         return response
 
-    # @common_exceptions_decorator
-    # def contract_day_weekly(self,):
-    #     return 'this function currently does not work as intended'
+    @common_exceptions_decorator
+    def contract_day_weekly(self, contract, new_day, comment,
+                            amend_next_payment, next_payment_amount=''):
+        # Get all method arguments
+        method_arguments = locals()
+        # We will not be passing self into EazyCustomerManager
+        del method_arguments['self']
+        # A set of pythonic arguments and EazyCustomerManager counterparts
+        parameters = {
+            'day': new_day,
+            'comment': comment,
+            'patchNextPayment': amend_next_payment,
+            'nextPaymentPatchAmount': next_payment_amount,
+        }
+
+        for key, value in method_arguments.items():
+            if value == '' and key != 'next_payment_amount':
+                raise InvalidParameterError(
+                    '%s cannot be empty.' % key
+                )
+        if amend_next_payment and next_payment_amount == '':
+            raise InvalidParameterError(
+                'next_payment_amount cannot be empty if amend_next_payment is'
+                ' set to true.'
+            )
+
+        #contract_checks.check_payment_day_in_week(new_day)
+        self.sdk.endpoint = 'contract/%s/weekly' % contract
+        self.sdk.params = parameters
+        response = self.sdk.patch()
+
+        if 'Contract updated' in response:
+            return 'Contract %s day updated to %s' % (contract, str(new_day))
+        elif 'Contract not found' in response:
+            print(response)
+            raise ResourceNotFoundError(
+                '%s is not a contract belonging to this client.' % contract
+            )
+        return response
 
     @common_exceptions_decorator
     def contract_date_monthly(self, contract, new_day, comment,
