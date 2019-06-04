@@ -14,7 +14,7 @@ class Test(unittest.TestCase):
         req = self.eazy.contract_amount(
             '1802e1dd-a657-428c-b8d0-ba162fc76203', x, 'Change contract amount'
             )
-        self.assertIn('amount updated to ', req)
+        self.assertIn('collection amount has been updated', req)
 
     def test_amount_cannot_be_empty(self):
         with self.assertRaises(InvalidParameterError) as e:

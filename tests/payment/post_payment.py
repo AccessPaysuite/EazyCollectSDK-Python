@@ -1,5 +1,5 @@
 from ... import main
-from ...settings import payments as p_settings
+from ...settings import Settings as s
 from ...exceptions import InvalidParameterError
 import unittest
 
@@ -16,7 +16,7 @@ class Test(unittest.TestCase):
         self.assertIn('"Error":null', req)
 
     def test_auto_fix_payment_date(self):
-        p_settings['auto_fix_payment_date'] = True
+        s.payments['auto_fix_payment_date'] = True
         req = self.eazy.payment(
             '2b62a358-9a1a-4c71-9450-e419e393dcd1', 10.00, '2018-07-15',
             'test comment', False

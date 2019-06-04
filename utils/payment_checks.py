@@ -30,8 +30,8 @@ def check_collection_date(collection_date):
             )
             return str(first_date)
         raise InvalidParameterError(
-            '%s is not a valid start date. The earliest start date available'
-            ' is %s. Please change this and re-submit.'
+            '%s is not a valid collection date. The earliest collection date'
+            ' available is %s. Please change this and re-submit.'
             % (desired_date, first_date)
         )
     else:

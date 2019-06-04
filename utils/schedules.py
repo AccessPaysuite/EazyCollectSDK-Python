@@ -80,7 +80,6 @@ def read_available_schedules_file():
             schedules_json['schedule'] = []
             # Get the schedules from EazyCustomerManager
             schedules = Get().schedules()
-            print(schedules)
             services_list = json.loads(schedules)
             # Read the schedules
             schedule_list = services_list['Services']
@@ -108,7 +107,6 @@ def read_available_schedules_file():
                 })
             update_schedules_file(schedules_json)
             return schedules_json
-
 
 def update_schedules_file(schedules_json):
     """ Update the schedules file with the list of schedules passed by

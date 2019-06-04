@@ -20,7 +20,7 @@ class Test(unittest.TestCase):
         )
         r = loads(req)
         self.assertEqual(2, len(r['Payments']))
-        self.assertIn('be047ad1-e314-4980-9cf6-2bb1d324a41d', req)
+        self.assertIn('8e194a8e-1d0b-4ac1-bf28-404b1516760f', req)
 
     def test_payments_get_single_payment_from_guid(self):
         req = self.eazy.payments_single(

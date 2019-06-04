@@ -4,7 +4,6 @@ from warnings import warn
 from .exceptions import common_exceptions_decorator
 from .exceptions import InvalidParameterError
 
-
 class Get:
     def __init__(self):
         """

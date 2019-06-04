@@ -126,20 +126,25 @@ def check_payment_day_in_month(payment_day_in_month):
     payment_day_in_month - A payment_day_in_month argument provided by
         the post.contract() function
     """
-    if int(payment_day_in_month) not in range(1, 28) \
-            and str(payment_day_in_month).lower() != 'last day of month':
+    try:
+        if int(payment_day_in_month) not in range(1, 28) \
+                and str(payment_day_in_month).lower() != 'last day of month':
+            raise InvalidParameterError(
+                '%s is not a valid payment day in month. Please check the'
+                ' payment day in month and re-submit. The available arguments'
+                ' are: \n'
+                '- 1\n'
+                '- 2\n'
+                '- ...\n'
+                '- 28\n'
+                '- last day of month' % payment_day_in_month
+            )
+        else:
+            pass
+    except ValueError:
         raise InvalidParameterError(
-            '%s is not a valid payment day in month. Please check the payment'
-            ' day in month and re-submit. The available arguments are: \n'
-            '- 1\n'
-            '- 2\n'
-            '- ...\n'
-            '- 28\n'
-            '- last day of month' % payment_day_in_month
+            'payment_day_in_month must be an integer.'
         )
-    else:
-        pass
-
 
 def check_payment_month_in_year(payment_month_in_year):
     """ Check that the payment_day_in_year argument can be found in the

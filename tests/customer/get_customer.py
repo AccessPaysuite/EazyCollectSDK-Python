@@ -2,7 +2,7 @@ from ... import main
 from json import loads as json
 from json import JSONDecodeError
 from datetime import datetime
-from ...settings import warnings
+from ...settings import Settings as s
 import unittest
 
 
@@ -111,7 +111,7 @@ class Test(unittest.TestCase):
 
         req_json = json(req)
         for record in req_json['Customers']:
-            date_record = record['DateOfBirth']
+            date_record = record['DateOfBirth'][0:10]
             self.assertIsNotNone(date_record)
             date = datetime.strptime(date_record, date_format).date()
             self.assertGreaterEqual(date, req_date)
@@ -125,7 +125,7 @@ class Test(unittest.TestCase):
 
         req_json = json(req)
         for record in req_json['Customers']:
-            date_record = record['DateOfBirth']
+            date_record = record['DateOfBirth'][0:7]
             self.assertIsNotNone(date_record)
             date = datetime.strptime(date_record, date_format).date()
             self.assertGreaterEqual(date, req_date)
@@ -139,7 +139,7 @@ class Test(unittest.TestCase):
 
         req_json = json(req)
         for record in req_json['Customers']:
-            date_record = record['DateOfBirth']
+            date_record = record['DateOfBirth'][0:4]
             self.assertIsNotNone(date_record)
             date = datetime.strptime(date_record, date_format).date()
             self.assertGreaterEqual(date, req_date)
@@ -353,12 +353,12 @@ class Test(unittest.TestCase):
             self.fail('json was not returned, no customers were returned.')
 
     def test_warning_enabled_warning_thrown(self):
-        warnings['customer_search'] = True
+        s.warnings['customer_search'] = True
         with self.assertWarns(UserWarning):
             self.eazy.customers()
 
     def test_warning_disabled_warning_not_thrown(self):
-        warnings['customer_search'] = False
+        s.warnings['customer_search'] = False
         try:
             with self.assertWarns(UserWarning):
                 self.eazy.customers()

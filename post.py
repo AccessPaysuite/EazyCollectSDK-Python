@@ -396,12 +396,12 @@ class Post:
                             'payment_day_in_month must be passed on monthly'
                             ' contracts'
                         )
-                else:
-                    raise InvalidParameterError(
-                        'payment_day_in_month must be set to %s if the start'
-                        ' date is set to %s'
-                        % (parameters['start'][8:10], parameters['start'])
-                    )
+                    else:
+                        raise InvalidParameterError(
+                            'payment_day_in_month must be set to %s if the'
+                            ' start date is set to %s'
+                            % (parameters['start'][8:10], parameters['start'])
+                        )
             else:
                 contract_checks.check_payment_day_in_month(
                     payment_day_in_month
