@@ -6,6 +6,15 @@ from ..exceptions import InvalidParameterError
 
 
 def check_collection_date(collection_date):
+    """ Check that the collection_date argument is a valid ISO date and
+    is at least x working days in the future, where x is the
+    pre-determined bacs_processing_days setting. Throw an error if this
+    is not the case.
+
+    :Args:
+    collection_date - A collection_date argument provided by the
+        post.payment() function
+    """
     date_format = '%Y-%m-%d'
     desired_date = datetime.strptime(collection_date, date_format).date()
     ongoing_days = s.direct_debit_processing_days['ongoing']
@@ -30,6 +39,12 @@ def check_collection_date(collection_date):
 
 
 def is_credit_allowed_check():
+    """ Check whether or not is_credit is enabled for a client. This
+    function does not check whether is_credit is enabled through
+    EazyCustomerManager, instead it checks the setting in settings.py.
+    Regardless of the setting, is_credit will be disallowed if it is
+    disallowed on EazyCustomerManager.
+    """
     if s.payments['is_credit_allowed']:
         pass
     else:
@@ -41,6 +56,14 @@ def is_credit_allowed_check():
 
 
 def check_collection_amount(collection_amount):
+    """ Check that the collection_amount argument is a float and is
+    above 0.00. If collection_amount is not a float and above 0.00,
+    throw and error.
+
+    :Args:
+    collection_amount - A collection_amount argument provided by
+        the post.payment() function
+    """
     try:
         if float(collection_amount) >= 0.01:
             pass

@@ -14,8 +14,12 @@ ecm3_schedules = (base_path / '../includes/ecm3.csv').resolve()
 
 
 def check_schedule_name(schedule_name):
-    """ Determine the schedule a contract is attempting to be created
-    against exists
+    """ Read a file containing all available schedules, and return an
+    error if the selected schedule_name cannot be found in the file.
+
+    :Args:
+     schedule_name - A schedule_name provided by the post.contract()
+        function
     """
     schedules = read_available_schedules_file()
 
@@ -31,8 +35,13 @@ def check_schedule_name(schedule_name):
 
 
 def check_termination_type(termination_type):
-    """ Determining the termination type is important, as it allows us to
-    decide which other checks need to be made.
+    """ Check that the termination_type can be found in the approved
+    list of termination_types, and if so, return a number to be used by
+    other functions.
+
+    :Args:
+    termination type - A termination_type provided by the
+        post.contract() function
     """
     termination_type_arguments = {
         'take certain number of debits': 0,
@@ -53,6 +62,14 @@ def check_termination_type(termination_type):
 
 
 def check_at_the_end(at_the_end):
+    """ Check that the at_the_end argument can be found in the approved
+    list of at_the_end arguments, and if so, return a number to be used
+    by other functions.
+
+    :Args:
+    at_the_end - An at_the_end argument provided by the post.contract()
+        function
+    """
     at_the_end_arguments = {
         'expire': 0,
         'switch to further notice': 1,
@@ -71,6 +88,14 @@ def check_at_the_end(at_the_end):
 
 
 def check_payment_day_in_week(payment_day_in_week):
+    """ Check that the payment_day_in_week argument can be found in the
+    set of payment_day_in_week arguments, and throw an error if it
+    cannot be found.
+
+    :Args:
+    payment_day_in_week - A payment_day_in_week argument provided by the
+        post.contract() function
+    """
     payment_day_in_week_arguments = [
         'monday',
         'tuesday',
@@ -93,6 +118,14 @@ def check_payment_day_in_week(payment_day_in_week):
 
 
 def check_payment_day_in_month(payment_day_in_month):
+    """ Check that the payment_day_in_month argument can be found in the
+    set of payment_day_in_month arguments, and throw an error if it
+    cannot be found.
+
+    :Args:
+    payment_day_in_month - A payment_day_in_month argument provided by
+        the post.contract() function
+    """
     if int(payment_day_in_month) not in range(1, 28) \
             and str(payment_day_in_month).lower() != 'last day of month':
         raise InvalidParameterError(
@@ -109,6 +142,14 @@ def check_payment_day_in_month(payment_day_in_month):
 
 
 def check_payment_month_in_year(payment_month_in_year):
+    """ Check that the payment_day_in_year argument can be found in the
+    set of payment_day_in_year arguments, and throw an error if it
+    cannot be found.
+
+    :Args:
+    payment_day_in_year - A payment_day_in_year argument provided by
+        the post.contract() function
+    """
     if int(payment_month_in_year) not in range(1, 12):
         raise InvalidParameterError(
             '%s is not a valid payment month in year. Please check the payment'
@@ -124,9 +165,13 @@ def check_payment_month_in_year(payment_month_in_year):
 
 
 def check_number_of_debits(number_of_debits):
-    """ A simple check to ensure it is a number that is being passed
-    into the params body. This would be simple, if not for
-    EazyCustomerManager insists on fetching a string, and not an int.
+    """ Check that the number_of_debits argument is an integer and is
+    between 1 and 99. If number_of_debits is not an integer between 1
+    and 99, throw and error.
+
+    :Args:
+    number_of_debits - A number_of_debits argument provided by
+        the post.contract() function
     """
     try:
         number = int(number_of_debits)
@@ -139,11 +184,20 @@ def check_number_of_debits(number_of_debits):
             pass
     except TypeError:
         raise InvalidParameterError(
-            'number_of_debits must be an integer.'
+            'number_of_debits must be a positive integer between 1 and 99.'
         )
 
 
 def check_start_date(start_date):
+    """ Check that the start_date argument is a valid ISO date and is
+    at least x working days in the future, where x is the pre-determined
+    bacs_processing_days setting. Throw an error if this is not the
+    case.
+
+    :Args:
+    start_date - A start_date argument provided by the post.contract()
+        function
+    """
     date_format = '%Y-%m-%d'
     start = datetime.strptime(start_date, date_format).date()
     initial_days_in_future = s.direct_debit_processing_days['initial']
@@ -168,6 +222,16 @@ def check_start_date(start_date):
 
 
 def check_termination_date_is_in_future(termination_date, start_date):
+    """ Check that the termination_date argument is a valid ISO date and is
+    in the future relative to the start_date. Throw an error if this is not
+    the case.
+
+    :Args:
+    termination_date - A termination_date argument provided by the
+        post.contract() function
+    start_date - A start_date argument provided by the post.contract()
+        function
+    """
     date_format = '%Y-%m-%d'
     start = datetime.strptime(start_date, date_format).date()
     termination = datetime.strptime(termination_date, date_format).date()
@@ -183,6 +247,14 @@ def check_termination_date_is_in_future(termination_date, start_date):
 
 
 def ad_hoc_checker(schedule):
+    """ Check the status of a schedule by reading the JSON found in
+        the includes folder, and whether or not it is ad-hoc. If it is
+        ad-hoc, return True, if not, return False.
+
+    :Args:
+    schedule - A schedule_name argument provided by the post.contract()
+        function
+    """
     schedule_type = None
     if s.current_environment['env'] == 'sandbox':
         schedules_json = sandbox_schedules
@@ -205,6 +277,14 @@ def ad_hoc_checker(schedule):
 
 
 def payment_time_frame_checker(schedule):
+    """ Check the frequency of a schedule by reading the JSON found in
+        the includes folder. Return a number depending on the frequency
+        used in other functions for validation.
+
+    :Args:
+    schedule - A schedule_name argument provided by the post.contract()
+        function
+    """
     payment_type = None
     if s.current_environment['env'] == 'sandbox':
         schedules_json = sandbox_schedules

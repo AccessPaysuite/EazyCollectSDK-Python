@@ -3,8 +3,14 @@ from re import search as s
 
 
 def check_postcode_is_valid_uk_format(post_code):
-    """ A simple regex check to determine whether a postcode is a valid
-    format. Overseas or BFPO codes are not accepted.
+    """ Check a post_code is of valid formatting. This function will not
+    verify whether a post_code actually exists, that responsibility lies
+    with the client. This function does not take BFPO post_code. If the
+    post code is not valid, throw an error.
+
+    :Args:
+     post_code - A post_code provided by the post.customer()
+        function
     """
     r = s(
         '^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii]'
@@ -20,8 +26,15 @@ def check_postcode_is_valid_uk_format(post_code):
 
 
 def check_email_address_format(email_address):
-    """ A non-RFC complaint regex search to determine the validity of an
-    email address. Covers 99.99% of use cases.
+    """ Check an email_address is of valid formatting. This function
+    will not verify whether a email_address actually exists, instead
+    it checks that an email could exist. The responsibility of checking
+    that an email actually exists lies with the client. If the email
+    formatting is invalid, throw an error.
+
+    :Args:
+     email_address - An email_address provided by the post.customer()
+        function
     """
     r = s(
         '(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)', email_address
@@ -36,9 +49,20 @@ def check_email_address_format(email_address):
 
 
 def check_bank_details_format(account_number, sort_code, account_name):
-    """ A simple bank account detail check. This does not verify
-    whether a bank account exists or whether the sort code matches to
-    the account number.
+    """ Check an account_number, sort_code and account_name are all of
+    valid formatting. This function does not verify whether or not a
+    bank account exists, or whether it could exist. It simply checks the
+    length of the three arguments. The responsibility of verifying the
+    legitimacy of the account details lies with the client. If any of
+    the three values are not the correct formatting, throw an error.
+
+    :Args:
+     account_number - An account_number provided by the post.customer()
+        function
+     sort_code - A sort_code provided by the post.customer()
+        function
+     account_name - An account_name provided by the post.customer()
+        function
     """
     num_r = s(
         '^[0-9]{8}$', account_number

@@ -4,14 +4,19 @@ from ..settings import Settings as s
 from datetime import timedelta
 from requests import get
 
+
 base_path = Path(__file__).parent
 bank_holidays_file = (base_path / '../includes/holidays.csv').resolve()
 
 
 def check_working_days_in_future(number_of_days):
-    """ Take a number of working days, and add those days from todays
-    date. Return a number, which is the number of calendar days in the
-    future. If the number is 0, this means the date is acceptable.
+    """ Take X number of working days, and calculate the number of
+    working days X is in the future from today. Call
+    read_bank_holiday_file_and_check_if_update_needed() to get a list
+    of bank holidays.
+
+    :Args:
+    number_of_days - The number of days in the future X is
     """
     holidays = read_bank_holiday_file_and_check_if_update_needed()
     working_days = 0
@@ -48,8 +53,11 @@ def check_working_days_in_future(number_of_days):
 
 
 def read_bank_holiday_file_and_check_if_update_needed():
-    """ Read the bank holidays file, and call the function to
-    update it if necessary.
+    """ Read the bank holidays file and return a list of all bank
+    bank holidays for the current year. If the file has not been updated
+    in the pre_determined number of days in the settings file, read
+    the bank_holidays.json file and get a list of all bank holidays in
+    the current year or later.
     """
     # We need the datetime to access the year element
     today_datetime = datetime.now()
@@ -76,7 +84,7 @@ def read_bank_holiday_file_and_check_if_update_needed():
                 )
                 new_holidays = get('https://www.gov.uk/bank-holidays.json')
                 holidays_json = new_holidays.json()['england-and-wales'] \
-                ['events']
+                    ['events']
 
                 for date in holidays_json:
                     # Add  bank holidays from or after the current year
@@ -105,6 +113,13 @@ def read_bank_holiday_file_and_check_if_update_needed():
 
 
 def update_bank_holidays_file(bank_holiday_list):
+    """ Write the bank_holiday_list to the bank_holidays.csv file,
+    prepending it with todays date, which will be used for updating the
+    file in the future.
+
+    :Args:
+    number_of_days - The number of days in the future X is
+    """
     with open(bank_holidays_file, 'w') as f:
         # Update the header
         f.write(str(datetime.now().date()))

@@ -133,6 +133,27 @@ class Patch:
 
     @common_exceptions_decorator
     def contract_amount(self, contract, collection_amount, comment):
+        """
+        Modify a contract_amount in EazyCustomerManager. It is
+        important to note that if the contract is already within the
+        cut-off date for the next collection, this will not be amended
+        until the following month.
+
+         :Required args:
+         - contract - The GUID of the contract to be modified within
+             EazyCustomerManager.
+         - collection_amount - The new collection amount of the contract
+            modified within EazyCustomerManager.
+         - comment - A comment to go along with the amendment
+
+         :Example:
+         contract('36bb4f4f-9a7f-4ead-82dc-9295c6fb9e8b', 10.50,
+         'A comment')
+
+         :Returns:
+         'Contract {guid} collection amount has been updated to
+         {collection_amount}'
+         """
         # Get all method arguments
         method_arguments = locals()
         # We will not be passing self into EazyCustomerManager
@@ -163,13 +184,40 @@ class Patch:
             )
         return response
 
-    @common_exceptions_decorator
-    def contract_day_weekly(self,):
-        return 'this function currently does not work as intended.'
+    # @common_exceptions_decorator
+    # def contract_day_weekly(self,):
+    #     return 'this function currently does not work as intended'
 
     @common_exceptions_decorator
     def contract_date_monthly(self, contract, new_day, comment,
                               amend_next_payment, next_payment_amount=''):
+        """
+        Modify the collection date on a monthly contract in
+        EazyCustomerManager. It is important to note that if the
+        contract is already within the cut-off date for the next
+        collection, this will not be amended until the following month.
+
+        :Required args:
+        - contract - The GUID of the customer to be modified within
+            EazyCustomerManager.
+        - new day - The new collection day for the contract
+        - comment - A comment to go along with the amendment
+        - amend_next_payment - Whether or not the next collection
+            amount should be amended due to the change in collection
+            date
+
+        :Optional args:
+        - next_payment_patch_amount - The collection amount of next
+            payment. This should only be passed if amend_next_payment
+            is set to True.
+
+        :Example:
+        'contract_date_monthly('36bb4f4f-9a7f-4ead-82dc-9295c6fb9e8b',
+        15, 'A comment', False)
+
+        :Returns:
+        'Contract {guid} day updated to {day}'
+        """
         # Get all method arguments
         method_arguments = locals()
         # We will not be passing self into EazyCustomerManager
@@ -209,6 +257,35 @@ class Patch:
     @common_exceptions_decorator
     def contract_date_annually(self, contract, new_day, new_month, comment,
                                amend_next_payment, next_payment_amount=''):
+        """
+        Modify the collection date on an annual contract in
+        EazyCustomerManager. It is important to note that if the
+        contract is already within the cut-off date for the next
+        collection, this will not be amended until the following year.
+
+        :Required args:
+        - contract - The GUID of the customer to be modified within
+            EazyCustomerManager.
+        - new day - The new collection day for the contract
+        - new_month - The new collection month for the contract
+        - comment - A comment to go along with the amendment
+        - amend_next_payment - Whether or not the next collection
+            amount should be amended due to the change in collection
+            date
+
+        :Optional args:
+        - next_payment_patch_amount - The collection amount of next
+            payment. This should only be passed if amend_next_payment
+            is set to True.
+
+        :Example:
+        'contract_date_annually('36bb4f4f-9a7f-4ead-82dc-9295c6fb9e8b',
+        15, 6, 'A comment', False)
+
+        :Returns:
+        'Contract {guid} day updated to {day} and month updated to
+        {month}'
+        """
         # Get all method arguments
         method_arguments = locals()
         # We will not be passing self into EazyCustomerManager
@@ -249,6 +326,28 @@ class Patch:
     @common_exceptions_decorator
     def payment(self, contract, payment, collection_amount, collection_date,
                 comment):
+        """
+        Modify a payment in EazyCustomerManager. It is important to note
+        that once a payment has been submitted to BACS, it is too late
+        to amend the payment.
+
+         :Required args:
+         - contract - The GUID of the contract to be modified within
+             EazyCustomerManager.
+         - payment - The GUID of the payment to be modified within
+             EazyCustomerManager.
+         - collection_amount - The new collection amount of the payment
+         - collection_date - The new collection date of the payment
+         - comment - A comment to accompany the amended payment
+
+         :Example:
+         payment('36bb4f4f-9a7f-4ead-82dc-9295c6fb9e8b',
+         '36bb4f4f-9a7f-4ead-82dc-9295c6fb9e8b', 10.50, '2019-06-04',
+         'A comment')
+
+         :Returns:
+         'Payment updated'
+         """
         # Get all method arguments
         method_arguments = locals()
         # We will not be passing self into EazyCustomerManager
