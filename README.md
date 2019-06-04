@@ -25,7 +25,7 @@ configuration can be seen below.
     print(response)
 
 ## Documentation
-All functions in EazySDK possess their own documentation, and can be fetched by calling `help(function)`. The documentation can also be [found on GitHub](https://github.com/EazyCollectServices/EazyCollectSDK-Python/tree/local/docs), or in the /docs directory of the package.
+All functions in EazySDK possess their own documentation, and can be fetched by calling `help(function)`. The documentation can also be [found on GitHub](https://github.com/EazyCollectServices/EazyCollectSDK-Python/tree/master/docs), or in the /docs directory of the package.
 
 ## Issues
 If you find any issues with EazySDK, please [raise an issue on GitHub](https://github.com/EazyCollectServices/EazyCollectSDK-Python/issues/new) detailing the issue. If this is not possible, alternatively email help@eazycollect.co.uk with as much information as you are able to provide.
