@@ -1,6 +1,6 @@
 # EazySDK - Python client
 Welcome to the **EazySDK** repository.  EazySDK is an integration of the 
-[Eazy Collect API version 3](https://eazycollectservices.github.io/EazyCollectAPIv3/)built in Python. Its core purpose is to provide a framework for developers already working with Eazy Collect to integrate Eazy Customer Manager into their platform. The framework provides functions designed to speed up the integration process between a developers Customer Relationship Manager and Eazy Collect. Getting started is as simple as providing user specific settings, and making your first call to Eazy Customer Manager should take less than a minute.
+[Eazy Collect API version 3](https://eazycollectservices.github.io/EazyCollectAPIv3/) built in Python. Its core purpose is to provide a framework for developers already working with Eazy Collect to integrate Eazy Customer Manager into their platform. The framework provides functions designed to speed up the integration process between a developers Customer Relationship Manager and Eazy Collect. Getting started is as simple as providing user specific settings, and making your first call to Eazy Customer Manager should take less than a minute.
 
 ## Requirements
  - python (3.5 >=)
