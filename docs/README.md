@@ -265,7 +265,7 @@ Search EazyCustomerManager for a list of all payments belonging to a specific co
 
 *Optional parameters*
 
-- number_of_rows - The number of payments to return from a contract. By default, this is set to `100`. 
+- *number_of_rows* - The number of payments to return from a contract. By default, this is set to `100`. 
 
 *Example*
 
