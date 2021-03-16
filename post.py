@@ -20,20 +20,26 @@ class Post:
         self.sdk = Session()
 
     @common_exceptions_decorator
-    def callback_url(self, callback_url):
+    def callback_url(self, entity, callback_url):
         """
-        Create or update the endpoint for data returned from ECM3
+        Create or update the endpoint for given entity data returned from ECM3
 
         NOTE: We strongly recommend using a HTTPS secured URL as the
         return endpoint.
 
         :Example:
-        callback_url(callback_url='test.com')
+        callback_url(entity='contract', callback_url='test.com')
 
         :Returns:
         'The new callback url is example.com'
         """
-        self.sdk.endpoint = 'BACS/callback'
+
+        if entity.lower() not in ('contract', 'customer', 'payment'):
+            raise InvalidParameterError("{} is not a valid entity; must be "
+                                        "one of either 'contract', 'customer' "
+                                        "or 'payment'.".format(entity))
+
+        self.sdk.endpoint = 'BACS/{}/callback'.format(entity)
         self.sdk.params = {
             'url': callback_url
         }

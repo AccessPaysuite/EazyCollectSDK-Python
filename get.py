@@ -12,17 +12,23 @@ class Get:
         self.sdk = Session()
 
     @common_exceptions_decorator
-    def callback_url(self,):
+    def callback_url(self, entity):
         """
-        Get the current callback URL from ECM3
+        Get the current callback URL for given entity from ECM3
 
         :Example:
-        callback_url()
+        callback_url('contract')
 
         :Returns:
         'The current callback url is example.com'
         """
-        self.sdk.endpoint = 'BACS/callback'
+
+        if entity.lower() not in ('contract', 'customer', 'payment'):
+            raise InvalidParameterError("{} is not a valid entity; must be one "
+                                        "of either 'contract', 'customer' or "
+                                        "'payment'.".format(entity))
+
+        self.sdk.endpoint = 'BACS/{}/callback'.format(entity)
         response = self.sdk.get()
         # NULL will be returned if a callback URL does not exist
         if str(response) == '{"Message":null}':

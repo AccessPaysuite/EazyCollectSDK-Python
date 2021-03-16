@@ -1,5 +1,5 @@
 from .session import Session
-from .exceptions import common_exceptions_decorator
+from .exceptions import common_exceptions_decorator, InvalidParameterError
 from .exceptions import ResourceNotFoundError
 
 
@@ -12,17 +12,24 @@ class Delete:
         self.sdk = Session()
 
     @common_exceptions_decorator
-    def callback_url(self,):
+    def callback_url(self, entity):
         """
-        Delete the current callback URL from EazyCustomerManager
+        Delete the current callback URL for given entity
+        from EazyCustomerManager
 
         :Example:
-        callback_url()
+        callback_url('contract')
 
         :Returns:
         'Callback URL deleted.'
         """
-        self.sdk.endpoint = 'BACS/callback'
+
+        if entity.lower() not in ('contract', 'customer', 'payment'):
+            raise InvalidParameterError("{} is not a valid entity; must be "
+                                        "one of either 'contract', 'customer' "
+                                        "or 'payment'.".format(entity))
+
+        self.sdk.endpoint = 'BACS/{}/callback'.format(entity)
         response = self.sdk.delete()
         # NULL will be returned if a callback URL does not exist
         if str(response) == '{"Message":null}':
